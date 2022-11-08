@@ -4,57 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/rectangle">
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle"
+        android:paddingBottom="15dp">
 
-        <Button
-            android:background="@drawable/ic_favorite_shadow_24dp"
+        <ImageButton
             android:id="@+id/fav"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginTop="8dp"
-             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.958"
-            app:layout_constraintRight_toLeftOf="parent"
+            android:layout_margin="10dp"
+            android:background="@drawable/ic_favorite_shadow_24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/homeImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/awayImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/homeTeam"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="70dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/purple_200"
+            app:layout_constraintEnd_toStartOf="@id/result"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:id="@+id/result"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold|italic"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
+            android:layout_marginStart="50dp"
+            android:background="@drawable/rectangle"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textColor="@color/teal_700"
+            app:layout_constraintBaseline_toBaselineOf="@id/homeTeam"
+            app:layout_constraintEnd_toStartOf="@id/awayTeam"
+            app:layout_constraintStart_toEndOf="@id/homeTeam"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/status"
-            android:layout_width="match_parent"
+            android:id="@+id/awayTeam"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold|italic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name" />
-
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold|italic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/status" />
-
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/purple_200"
+            app:layout_constraintBaseline_toBaselineOf="@id/result"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/result" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -15,9 +15,12 @@ import kotlin.collections.ArrayList
 
 class MatchesViewModel(application: Application) : AndroidViewModel(application) {
 
+
+
     private val database = getInstance(application)
 
 
+    // prepare remote data
     private var remoteRepositoryImp: RemoteRepositoryImp
 
     private var _remoteLiveData = MutableLiveData<List<MatchEntity>>()
@@ -26,13 +29,8 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
 
     init {
         remoteRepositoryImp = RemoteRepositoryImp(APIService.ServerApi)
-        getListOfRefreshedMatches()
-    }
 
-    fun getCurrentDate(): String {
-        val formatter = SimpleDateFormat("yyyy-MM-dd")
-        val date = Date()
-        return formatter.format(date)
+        getListOfRefreshedMatches()
     }
 
     private fun getListOfRefreshedMatches() {
@@ -52,18 +50,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    private val _index = MutableLiveData<Int>()
-    val text: LiveData<String> = Transformations.map(_index) {
-        if (it.equals(1)) {
-            "Hello world from one: $it"
 
-        } else {
-            "Hello world from two: $it"
 
-        }
-    }
 
-    fun setIndex(index: Int) {
-        _index.value = index
-    }
 }

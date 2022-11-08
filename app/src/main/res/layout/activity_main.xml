@@ -12,8 +12,8 @@
         android:theme="@style/Theme.TheEnglishPremierLeague.AppBarOverlay">
 
         <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+             android:id="@+id/title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:minHeight="?actionBarSize"
@@ -23,6 +23,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.appbar.AppBarLayout>

@@ -32,25 +32,33 @@ class MatchesFragment : Fragment() {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
+        // prepare view model
         val application = requireNotNull(this.activity).application
         val viewModelFactory = ViewModelFactory(application)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java)
-                .apply {
-                    setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
+
+        // to check which view is selected now
+        if(arguments?.getInt(ARG_SECTION_NUMBER) == 1){
+            // show dialog till  get response
+            binding.statusLoadingWheel.visibility = View.VISIBLE
+            viewModel.remoteList.observe(viewLifecycleOwner, Observer {
+                it?.let {
+                    // hide dialog as list is ready
+                    binding.statusLoadingWheel.visibility = View.GONE
+                    // setup my adapter
+                    var adapter = MatchAdapter(it)
+                    binding.recycler.adapter = adapter
+
                 }
+            })
+        }
+        else{
 
-        // show dialog till api get response
-        binding.statusLoadingWheel.visibility = View.VISIBLE
-        viewModel.remoteList.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                // hide dialog as list is ready
-                binding.statusLoadingWheel.visibility = View.GONE
-                // setup my adapter
-                var adapter = MatchAdapter(it)
-                binding.recycler.adapter = adapter
 
-            }
-        })
+        }
+
+
+
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root

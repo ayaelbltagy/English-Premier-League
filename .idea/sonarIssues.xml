@@ -53,11 +53,6 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../ProductsDemoApp/app/src/main/java/com/example/productsdemoapp/ProductsAdapter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/app/build.gradle">
           <value>
             <set />
@@ -188,6 +183,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/ic_favorite_red_24dp.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/drawable/ic_favorite_shadow_24dp.xml">
           <value>
             <set />
@@ -219,6 +219,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/values/themes.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../ProductsDemoApp/app/src/main/java/com/example/productsdemoapp/ProductsAdapter.kt">
           <value>
             <set />
           </value>
