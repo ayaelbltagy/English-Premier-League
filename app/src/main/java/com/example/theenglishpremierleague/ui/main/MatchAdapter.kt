@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.theenglishpremierleague.R
 import com.example.theenglishpremierleague.databinding.OneMatchItemBinding
 import com.example.theenglishpremierleague.ui.data.local.MatchEntity
+import java.text.SimpleDateFormat
+import java.util.*
 
-class MatchAdapter(private var items: List<MatchEntity>) :
+class MatchAdapter(private var items: List<MatchEntity>, private val viewModel: MatchesViewModel) :
     RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
 
     private var isFav: Boolean = false
@@ -25,7 +27,14 @@ class MatchAdapter(private var items: List<MatchEntity>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.itemBinding.result.text = item.status
+        holder.itemBinding.homeTeam.text = item.homeTeamName
+        holder.itemBinding.awayTeam.text = item.awayTeamName
+        if(item.status.equals("FINISHED")){
+          holder.itemBinding.result.text = item.homeTeamScore+""+"_"+""+item.awayTeamScore
+        }
+        else{
+            holder.itemBinding.result.text = convertDateFormat(item.date)
+        }
         holder.itemBinding.fav.setOnClickListener { view ->
             if (!isFav) {
                 isFav = true
@@ -46,4 +55,12 @@ class MatchAdapter(private var items: List<MatchEntity>) :
         return items.size
     }
 
+    fun convertDateFormat(input:String) : String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+        inputFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val date = inputFormat.parse(input)
+        val outputFormat = SimpleDateFormat("hh:mm", Locale.US)
+        outputFormat.timeZone = TimeZone.getDefault()
+        return outputFormat.format(date)
+    }
 }

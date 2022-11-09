@@ -9,4 +9,6 @@ interface ServerAPIs {
     // suspend fun getAllMatches(@Query("date") date: String,@Header("X-Auth-Token") key: String) : Response<List<MatchEntity>>
     suspend fun getAllMatches(@Query("date") date: String, @Header("X-Auth-Token") key: String): String
 
+
+
 }
