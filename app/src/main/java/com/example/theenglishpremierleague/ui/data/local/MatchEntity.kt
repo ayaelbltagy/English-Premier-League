@@ -14,6 +14,7 @@ data class MatchEntity (
      val homeTeamName :String,
      val homeTeamId :Long,
      val awayTeamName : String,
-     val awayTeamId :Long
+     val awayTeamId :Long,
+     val isFav : Boolean
       )
 

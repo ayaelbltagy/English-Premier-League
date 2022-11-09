@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 
 interface LocalRepository {
 
-    fun addFavoriteMatches  (matches : List<MatchEntity>)
+    fun addFavoriteMatches (matches :  MatchEntity)
     fun getFavoriteMatches () : LiveData<List<MatchEntity>>
+    fun deleteFavoriteById(id: Long)
+
 
 
 }

@@ -8,6 +8,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-livedata-core/2.5.1/38ecd5651d87b6db994df01f93fc72d6e59b846a/lifecycle-livedata-core-2.5.1-sources.jar!/androidx/lifecycle/MutableLiveData.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-viewmodel/2.5.1/5ca998743721e06de4c4b5d48b7bbf0e73a8289b/lifecycle-viewmodel-2.5.1-sources.jar!/androidx/lifecycle/ViewModelProvider.kt">
           <value>
             <set />
@@ -54,6 +59,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/build/generated/source/kapt/debug/com/example/theenglishpremierleague/ui/data/local/MatchDAO_Impl.java">
           <value>
             <set />
           </value>
@@ -244,6 +254,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../ProductsDemoApp/app/src/main/java/com/example/productsdemoapp/ProductsAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/TestTabs/app/build.gradle">
           <value>
             <set />
           </value>
