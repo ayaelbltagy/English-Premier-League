@@ -253,6 +253,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../ProductsDemoApp/app/src/main/java/com/example/productsdemoapp/ProductsAdapter.kt">
           <value>
             <set />

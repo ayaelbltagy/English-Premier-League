@@ -34,6 +34,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         remoteRepositoryImp = RemoteRepositoryImp(APIService.ServerApi)
         localRepositoryImp = LocalRepositoryImp(database)
         list = localRepositoryImp.getFavoriteMatches()
+
         getListOfRefreshedMatches()
         getListOfLocalMatches()
     }
@@ -70,8 +71,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                             homeTeamName,
                             homeTeamId,
                             awayTeamName,
-                            awayTeamId,
-                            false
+                            awayTeamId
                         )
                         dataArrayList.add(model)
                     }
@@ -89,8 +89,6 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         localList.addSource(list) {
             localList.value = it
         }
-        Log.i("inLocal", localList.value?.size.toString())
-
     }
 
 
@@ -103,14 +101,20 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         localList.value = _localLiveData.value
         Log.i("listSize", (_localLiveData.value as MutableList<MatchEntity>).size.toString())
         Log.i("testSize", localList.value?.size.toString())
-    }
+     }
 
-    suspend fun removeSource(oneMatch: MatchEntity) {
+    suspend fun removeSourceFromFav (oneMatch: MatchEntity) {
+
         withContext(Dispatchers.IO) {
-            localRepositoryImp.deleteFavoriteById(oneMatch.id)
+           localRepositoryImp.deleteFavoriteById(oneMatch.id)
+            Log.i("", localRepositoryImp.getFavoriteMatches().value?.size.toString())
+       }
+        list = localRepositoryImp.getFavoriteMatches()
+        localList.addSource(list){
+            localList.value = it
         }
 
-    }
+     }
 
     private val _index = MutableLiveData<Int>()
     val text: LiveData<String> = Transformations.map(_index) {

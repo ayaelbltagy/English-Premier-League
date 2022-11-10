@@ -1,7 +1,6 @@
 package com.example.theenglishpremierleague.ui.main
 
-import android.app.Application
-import android.os.Bundle
+ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.theenglishpremierleague.databinding.FragmentMainBinding
 import com.example.theenglishpremierleague.ui.data.local.MatchEntity
 import kotlinx.coroutines.runBlocking
+import android.R.array
+ import android.util.Log
+
+ import java.util.*
+
 
 /**
  * A placeholder fragment containing a simple view.
@@ -40,14 +44,22 @@ class MatchesFragment : Fragment() {
         val viewModelFactory = ViewModelFactory(application)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1) }
+        // get list of local ids and send it to adapter to colored hart
+        val idsList = mutableListOf<Long>()
+        viewModel.localList.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                for (i in 0 until it.size) {
+                    if(!idsList.contains(it[i].id)){
+                        idsList.add(it[i].id)
+                        Log.i("idscheckSize", idsList.toString())
 
+                    }
+                }
+            }
+        })
         viewModel.text.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireContext(),it ,Toast.LENGTH_LONG).show()
-
             // to check which view is selected now
             if( it.equals("1") ){
-               // Toast.makeText(requireContext(),PAGE_NUMBER,Toast.LENGTH_LONG).show()
-
                 // show dialog till  get response
                 binding.statusLoadingWheel.visibility = View.VISIBLE
                 viewModel.remoteList.observe(viewLifecycleOwner, Observer {
@@ -56,47 +68,38 @@ class MatchesFragment : Fragment() {
                         binding.statusLoadingWheel.visibility = View.GONE
                         // setup my adapter
                         if(it.isNotEmpty()){
-                            var adapter = MatchAdapter(this@MatchesFragment,it)
+                            Log.i("inLocal", idsList.size.toString())
+
+                            var adapter = MatchAdapter(this@MatchesFragment,it,idsList,false)
                             binding.recycler.adapter = adapter
                         }
                         else{
                             // no item in get from server
+                            binding.statusLoadingWheel.visibility = View.GONE
                         }
 
                     }
                 })
             }
             else{
-              //  Toast.makeText(requireContext(),PAGE_NUMBER,Toast.LENGTH_LONG).show()
 
                 viewModel.localList.observe(viewLifecycleOwner, Observer {
                     it?.let {
-                        // setup my adapter
-                        if(it.isNotEmpty()){
-                            Toast.makeText(requireContext(),it.size.toString(),Toast.LENGTH_LONG).show()
-
-                            var adapter = MatchAdapter(this@MatchesFragment,it)
+                            var adapter = MatchAdapter(this@MatchesFragment,it,idsList,true)
                             binding.recycler.adapter = adapter
-                        }
-                        else{
-                            // no item in your fav
-                         //   Toast.makeText(requireContext(),"no items",Toast.LENGTH_LONG).show()
-                        }
                     }
                 })
             }
         })
 
-
-
-
-
-
         binding.lifecycleOwner = viewLifecycleOwner
+
 
         return binding.root
 
     }
+
+
 
     companion object {
         /**
@@ -132,7 +135,7 @@ class MatchesFragment : Fragment() {
 
     fun removeFromFav(item: MatchEntity) {
         runBlocking {
-            viewModel.removeSource(item)
+            viewModel.removeSourceFromFav(item)
         }
     }
 }
