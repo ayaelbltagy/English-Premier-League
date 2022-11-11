@@ -47,13 +47,14 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/purple_200"
+            android:textSize="15sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/result"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:paddingStart="30dp"
             android:id="@+id/result"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -62,14 +63,17 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="5dp"
+            android:paddingStart="30dp"
             android:textColor="@color/teal_700"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@id/homeTeam"
             app:layout_constraintEnd_toStartOf="@id/awayTeam"
             app:layout_constraintStart_toEndOf="@id/homeTeam"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-             android:id="@+id/awayTeam"
+            android:id="@+id/awayTeam"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -77,6 +81,8 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/purple_200"
+            android:textSize="15sp"
+            android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@id/result"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/result" />

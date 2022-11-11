@@ -14,11 +14,9 @@ import java.util.*
 
 class MatchAdapter(val fragment: MatchesFragment, private var items: List<MatchEntity>) :
     RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
-    private var isFav: Boolean = false
     private var idsLocalList = listOf<Long>()
     private var isFromLocal = false
-    private var row_index = -1
-    private var row = -2
+
 
     constructor(
         fragment: MatchesFragment,
@@ -43,75 +41,65 @@ class MatchAdapter(val fragment: MatchesFragment, private var items: List<MatchE
 
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        row = position
-        val item = items[position]
+         val item = items[position]
         holder.itemBinding.homeTeam.text = item.homeTeamName
         holder.itemBinding.awayTeam.text = item.awayTeamName
         if (item.status.equals("FINISHED")) {
-            holder.itemBinding.result.text = item.homeTeamScore + "" + "_" + "" + item.awayTeamScore
+            holder.itemBinding.result.text = item.homeTeamScore + "" + "-" + "" + item.awayTeamScore
         } else {
             holder.itemBinding.result.text = convertDateFormat(item.date)
         }
 
-
-        if (isFromLocal) {
+        if(item.isFav){
             holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
-        } else {
-            // to mark items already saved before
-            if (idsLocalList.size > 0) {
-                for (i in 0 until idsLocalList.size) {
-                    if (idsLocalList[i] == item.id) {
-
-                            holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
-
-                    }
-
-                }
-            }
         }
 
 
         // item click
-        holder.itemBinding.root.setOnClickListener { view ->
-            row_index = position
-            notifyDataSetChanged()
+        holder.itemBinding.fav.setOnClickListener { view ->
 
-        }
-        // clicked
-        if (row_index == position) {
-           // holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
-            if (idsLocalList.size > 0) {
-                for (id in 0 until idsLocalList.size) {
-                    if (idsLocalList[id] == item.id) {
-                        if (isFromLocal) {
-                            // found item so will remove from local db
-                            fragment.removeFromFav(item)
 
-                        } else {
-                            // fragment.removeFromFav(item)
-                            Log.i("fromLocaltest3", "test3")
+//                if (idsLocalList.size > 0) {
+//                    for (id in 0 until idsLocalList.size) {
+//                        if (idsLocalList[id] == item.id) {
+//                            if (isFromLocal) {
+//                                // found item so will remove from local db
+//                                fragment.removeFromFav(item)
+//
+//                            } else {
+//                                fragment.removeFromFav(item)
+//                                holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_shadow_24dp)
+//                            }
+//                        } else {
+//
+//                            // item not found so will added
+//                            if(item.isFav == false){
+//                                fragment.addToFav(item)
+//                                holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
+//                                fragment.update(item)
+//                            }
+//
+//                        }
+//                    }
+//                } else {
+//                    if(item.isFav == false){
+//                        fragment.addToFav(item)
+//                        holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
+//                        fragment.update(item)
+//                    }
+//
+//                }
 
-                            holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_shadow_24dp)
-                        }
-                    } else {
-                        Log.i("fromLocaltest3", "test")
-
-                        // item not found so will added
-                        fragment.addToFav(item)
-                        holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
-                    }
-                }
-            } else {
+            
+            if(!item.isFav){
+              //  holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
                 fragment.addToFav(item)
-                holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
+                fragment.update(item)
             }
 
-        }
-        // not clicked
-        else {
+     }
 
 
-        }
 
     }
 

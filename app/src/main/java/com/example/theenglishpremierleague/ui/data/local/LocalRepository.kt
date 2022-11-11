@@ -7,6 +7,7 @@ interface LocalRepository {
     fun addFavoriteMatches (matches :  MatchEntity)
     fun getFavoriteMatches () : LiveData<List<MatchEntity>>
     fun deleteFavoriteById(id: Long)
+    fun updateIsFavValue(value: Boolean , id: Long)
 
 
 

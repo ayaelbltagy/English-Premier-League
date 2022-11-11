@@ -8,6 +8,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-livedata-core/2.5.1/38ecd5651d87b6db994df01f93fc72d6e59b846a/lifecycle-livedata-core-2.5.1-sources.jar!/androidx/lifecycle/LiveData.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-livedata-core/2.5.1/38ecd5651d87b6db994df01f93fc72d6e59b846a/lifecycle-livedata-core-2.5.1-sources.jar!/androidx/lifecycle/MutableLiveData.java">
           <value>
             <set />
@@ -64,6 +69,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/build/generated/source/kapt/debug/com/example/theenglishpremierleague/ui/data/local/MatchDAO_Impl.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/build/tmp/kapt3/stubs/debug/com/example/theenglishpremierleague/ui/data/local/MatchDAO.java">
           <value>
             <set />
           </value>
@@ -158,6 +168,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MainActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MainActivity22.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MainActivity22.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MatchAdapter.kt">
           <value>
             <set />
@@ -239,6 +269,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
           <value>
             <set />
           </value>

@@ -11,9 +11,12 @@ interface MatchDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addFavoriteMatches  (matches :  MatchEntity)
 
-    @Query("SELECT * FROM match_table")
+    @Query("SELECT * FROM matches")
     fun getFavoriteMatches () : LiveData<List<MatchEntity>>
 
-    @Query("DELETE FROM match_table WHERE id = :id")
+    @Query("DELETE FROM matches WHERE id = :id")
     fun deleteFavoriteById(id: Long)
+
+    @Query("UPDATE matches SET isFav=:value WHERE id = :id")
+    fun updateIsFavValue(value: Boolean , id: Long)
 }

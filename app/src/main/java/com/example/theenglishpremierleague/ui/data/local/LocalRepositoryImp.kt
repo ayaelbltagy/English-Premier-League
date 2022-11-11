@@ -14,4 +14,9 @@ class LocalRepositoryImp (private val database :MatchesDB): LocalRepository {
     override fun deleteFavoriteById(id: Long) {
         database.getMatchesFromDao().deleteFavoriteById(id)
     }
+
+    override fun updateIsFavValue(value: Boolean, id: Long) {
+        database.getMatchesFromDao().updateIsFavValue(value,id)
+
+    }
 }

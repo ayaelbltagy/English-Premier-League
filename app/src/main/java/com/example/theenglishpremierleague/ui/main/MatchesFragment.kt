@@ -1,21 +1,21 @@
 package com.example.theenglishpremierleague.ui.main
 
- import android.os.Bundle
+//import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CalendarView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.theenglishpremierleague.databinding.FragmentMainBinding
 import com.example.theenglishpremierleague.ui.data.local.MatchEntity
+import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
-import android.R.array
- import android.util.Log
-
- import java.util.*
+import java.util.*
 
 
 /**
@@ -42,14 +42,16 @@ class MatchesFragment : Fragment() {
         // prepare view model
         val application = requireNotNull(this.activity).application
         val viewModelFactory = ViewModelFactory(application)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1) }
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
+                setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
+            }
         // get list of local ids and send it to adapter to colored hart
         val idsList = mutableListOf<Long>()
         viewModel.localList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 for (i in 0 until it.size) {
-                    if(!idsList.contains(it[i].id)){
+                    if (!idsList.contains(it[i].id)) {
                         idsList.add(it[i].id)
                         Log.i("idscheckSize", idsList.toString())
 
@@ -59,7 +61,7 @@ class MatchesFragment : Fragment() {
         })
         viewModel.text.observe(viewLifecycleOwner, Observer {
             // to check which view is selected now
-            if( it.equals("1") ){
+            if (it.equals("1")) {
                 // show dialog till  get response
                 binding.statusLoadingWheel.visibility = View.VISIBLE
                 viewModel.remoteList.observe(viewLifecycleOwner, Observer {
@@ -67,26 +69,24 @@ class MatchesFragment : Fragment() {
                         // hide dialog as list is ready
                         binding.statusLoadingWheel.visibility = View.GONE
                         // setup my adapter
-                        if(it.isNotEmpty()){
+                        if (it.isNotEmpty()) {
                             Log.i("inLocal", idsList.size.toString())
 
-                            var adapter = MatchAdapter(this@MatchesFragment,it,idsList,false)
+                            var adapter = MatchAdapter(this@MatchesFragment, it, idsList, false)
                             binding.recycler.adapter = adapter
-                        }
-                        else{
+                        } else {
                             // no item in get from server
                             binding.statusLoadingWheel.visibility = View.GONE
                         }
 
                     }
                 })
-            }
-            else{
+            } else {
 
                 viewModel.localList.observe(viewLifecycleOwner, Observer {
                     it?.let {
-                            var adapter = MatchAdapter(this@MatchesFragment,it,idsList,true)
-                            binding.recycler.adapter = adapter
+                        var adapter = MatchAdapter(this@MatchesFragment, it, idsList, true)
+                        binding.recycler.adapter = adapter
                     }
                 })
             }
@@ -95,10 +95,20 @@ class MatchesFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
 
+        binding.view.setOnDateChangeListener(object : CalendarView.OnDateChangeListener {
+            override fun onSelectedDayChange(p0: CalendarView, p1: Int, p2: Int, p3: Int) {
+                val selectedDate = p1.toString()+"-"+(p2 + 1).toString()+"-"+p3.toString()
+                viewModel.getListOfRefreshedMatches(selectedDate)
+
+            }
+
+
+        })
+
+
         return binding.root
 
     }
-
 
 
     companion object {
@@ -107,7 +117,8 @@ class MatchesFragment : Fragment() {
          * fragment.
          */
         private const val ARG_SECTION_NUMBER = "section_number"
-         /**
+
+        /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
@@ -128,14 +139,20 @@ class MatchesFragment : Fragment() {
     }
 
     fun addToFav(item: MatchEntity) {
-       runBlocking {
-           viewModel.saveFixtures(item)
-       }
+        runBlocking {
+            viewModel.saveFixtures(item)
+        }
     }
 
     fun removeFromFav(item: MatchEntity) {
         runBlocking {
             viewModel.removeSourceFromFav(item)
+        }
+    }
+
+    fun update(item: MatchEntity) {
+        runBlocking {
+            viewModel.updateItemToFav(item)
         }
     }
 }

@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/purple_500">
 
-        <com.hedyhidoury.calendar.horizontallibrary.HorizontalCalendarView            android:id="@+id/horizontal"
+        <ScrollView
+            android:id="@+id/horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:selectedBgColor="#89cacf"
-            app:todaysDateBgColor="#89cacf"
-            app:calendarBgColor="@android:color/white"
-            app:daysTextColor="@android:color/black"
-            app:weekTypeFace="museosans.otf"
-            app:headerPreviousIcon="@drawable/ic_backward"
-            app:headerForwardIcon="@drawable/ic_forward"
-            app:weekForwardIcon="@drawable/ic_forward"
-            app:weekPreviousIcon="@drawable/ic_backward"
-            app:hoursTypeFace="MuseoSans_500.otf"
-            app:headerTypeFace="MuseoSans_700.otf"
+            android:layout_height="70dp"
+            android:isScrollContainer="true"
             app:layout_constraintBottom_toTopOf="@+id/recycler"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-             tools:ignore="MissingClass,MissingConstraints" />
+            tools:ignore="MissingConstraints">
+
+            <CalendarView
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/teal_700"
+                tools:ignore="MissingClass,MissingConstraints" />
+        </ScrollView>
+
 
         <androidx.recyclerview.widget.RecyclerView
-            android:background="@color/purple_500"
             android:id="@+id/recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -37,7 +37,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontal"/>
+            app:layout_constraintTop_toBottomOf="@+id/horizontal" />
+
 
         <ProgressBar
             android:id="@+id/status_loading_wheel"

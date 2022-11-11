@@ -3,6 +3,7 @@ package com.example.theenglishpremierleague.ui.main
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import androidx.lifecycle.Transformations.map
 import com.example.theenglishpremierleague.ui.data.local.LocalRepositoryImp
 import com.example.theenglishpremierleague.ui.data.local.MatchEntity
 import com.example.theenglishpremierleague.ui.data.local.MatchesDB.Companion.getInstance
@@ -35,14 +36,14 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         localRepositoryImp = LocalRepositoryImp(database)
         list = localRepositoryImp.getFavoriteMatches()
 
-        getListOfRefreshedMatches()
+        getListOfRefreshedMatches("TODAY")
         getListOfLocalMatches()
     }
 
-    private fun getListOfRefreshedMatches() {
+     fun getListOfRefreshedMatches( date : String) {
         viewModelScope.launch {
             try {
-                val response = remoteRepositoryImp.getAllMatches("TODAY", API_KEY)
+                val response = remoteRepositoryImp.getAllMatches(date, API_KEY)
                 if (response != null) {
                     val responseJsonObject = JSONObject(response)
                     val dataArrayList: ArrayList<MatchEntity> = ArrayList()
@@ -71,13 +72,13 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                             homeTeamName,
                             homeTeamId,
                             awayTeamName,
-                            awayTeamId
+                            awayTeamId,
+                            false
                         )
                         dataArrayList.add(model)
                     }
                     _remoteLiveData.postValue(dataArrayList.toList())
-
-                }
+                 }
             }
             catch (ex: SocketTimeoutException){
 
@@ -99,22 +100,22 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         emptyList.add(oneMatch)
         _localLiveData.value = emptyList
         localList.value = _localLiveData.value
-        Log.i("listSize", (_localLiveData.value as MutableList<MatchEntity>).size.toString())
-        Log.i("testSize", localList.value?.size.toString())
+
      }
 
     suspend fun removeSourceFromFav (oneMatch: MatchEntity) {
-
         withContext(Dispatchers.IO) {
            localRepositoryImp.deleteFavoriteById(oneMatch.id)
-            Log.i("", localRepositoryImp.getFavoriteMatches().value?.size.toString())
        }
-        list = localRepositoryImp.getFavoriteMatches()
-        localList.addSource(list){
-            localList.value = it
-        }
 
      }
+
+    suspend fun updateItemToFav(item: MatchEntity) {
+        withContext(Dispatchers.IO) {
+            localRepositoryImp.updateIsFavValue(true,item.id)
+        }
+
+    }
 
     private val _index = MutableLiveData<Int>()
     val text: LiveData<String> = Transformations.map(_index) {
@@ -124,6 +125,8 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     fun setIndex(index: Int) {
         _index.value = index
     }
+
+
 
 
 }
