@@ -4,6 +4,4 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="matches">Fixtures </string>
     <string name="fav">Favorite </string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-</resources>
+  </resources>
