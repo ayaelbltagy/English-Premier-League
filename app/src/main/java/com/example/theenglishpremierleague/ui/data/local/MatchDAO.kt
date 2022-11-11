@@ -9,10 +9,10 @@ import androidx.room.Query
 @Dao
 interface MatchDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addFavoriteMatches  (matches :  MatchEntity)
+    fun addFavoriteMatches  (matches :  Match)
 
     @Query("SELECT * FROM matches")
-    fun getFavoriteMatches () : LiveData<List<MatchEntity>>
+    fun getFavoriteMatches () : LiveData<List<Match>>
 
     @Query("DELETE FROM matches WHERE id = :id")
     fun deleteFavoriteById(id: Long)

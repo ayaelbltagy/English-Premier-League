@@ -7,7 +7,6 @@ interface RemoteRepository {
     // suspend fun getAllMatches(@Query("date") date: String, @Header("X-Auth-Token") key: String) : Response<List<MatchEntity>>
 
     suspend fun getAllMatches(@Query("date") date: String, @Header("X-Auth-Token") key: String): String
-
-
+    suspend fun getTeamsImages( @Header("X-Auth-Token") key: String): String
 
 }

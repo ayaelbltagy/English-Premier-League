@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "matches")
-data class MatchEntity (
+data class Match (
      @PrimaryKey(autoGenerate = true)
      val id: Long,
      val status : String,

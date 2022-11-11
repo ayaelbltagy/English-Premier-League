@@ -68,6 +68,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/build/generated/source/kapt/debug/com/example/theenglishpremierleague/ui/data/local/ImageDAO_Impl.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/build/generated/source/kapt/debug/com/example/theenglishpremierleague/ui/data/local/MatchDAO_Impl.java">
           <value>
             <set />
@@ -99,6 +104,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/HomeTeam.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/ImageDAO.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/Images.kt">
           <value>
             <set />
           </value>

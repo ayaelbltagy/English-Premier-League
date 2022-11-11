@@ -7,7 +7,8 @@ class RemoteRepositoryImp(private val api: APIService.ServerApi) : RemoteReposit
         return api.retrofitService.getAllMatches(date, key)
     }
 
-
-
+    override suspend fun getTeamsImages(key: String): String {
+        return api.retrofitService.getTeamsImages(key)
+    }
 
 }

@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.theenglishpremierleague.databinding.FragmentMainBinding
-import com.example.theenglishpremierleague.ui.data.local.MatchEntity
+import com.example.theenglishpremierleague.ui.data.local.Images
+import com.example.theenglishpremierleague.ui.data.local.Match
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -53,7 +53,6 @@ class MatchesFragment : Fragment() {
                 for (i in 0 until it.size) {
                     if (!idsList.contains(it[i].id)) {
                         idsList.add(it[i].id)
-                        Log.i("idscheckSize", idsList.toString())
 
                     }
                 }
@@ -64,15 +63,21 @@ class MatchesFragment : Fragment() {
             if (it.equals("1")) {
                 // show dialog till  get response
                 binding.statusLoadingWheel.visibility = View.VISIBLE
+                var imagesList = listOf<Images>()
+                runBlocking {
+                    imagesList = viewModel.getImagesfromdb()
+
+                }
+
                 viewModel.remoteList.observe(viewLifecycleOwner, Observer {
                     it?.let {
                         // hide dialog as list is ready
                         binding.statusLoadingWheel.visibility = View.GONE
                         // setup my adapter
                         if (it.isNotEmpty()) {
-                            Log.i("inLocal", idsList.size.toString())
 
-                            var adapter = MatchAdapter(this@MatchesFragment, it, idsList, false)
+                            var adapter = MatchAdapter(this@MatchesFragment, it,imagesList, idsList, false)
+
                             binding.recycler.adapter = adapter
                         } else {
                             // no item in get from server
@@ -138,19 +143,19 @@ class MatchesFragment : Fragment() {
         _binding = null
     }
 
-    fun addToFav(item: MatchEntity) {
+    fun addToFav(item: Match) {
         runBlocking {
             viewModel.saveFixtures(item)
         }
     }
 
-    fun removeFromFav(item: MatchEntity) {
+    fun removeFromFav(item: Match) {
         runBlocking {
             viewModel.removeSourceFromFav(item)
         }
     }
 
-    fun update(item: MatchEntity) {
+    fun update(item: Match) {
         runBlocking {
             viewModel.updateItemToFav(item)
         }

@@ -6,27 +6,45 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.theenglishpremierleague.R
 import com.example.theenglishpremierleague.databinding.OneMatchItemBinding
-import com.example.theenglishpremierleague.ui.data.local.MatchEntity
+import com.example.theenglishpremierleague.ui.data.local.Images
+import com.example.theenglishpremierleague.ui.data.local.Match
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MatchAdapter(val fragment: MatchesFragment, private var items: List<MatchEntity>) :
+class MatchAdapter(val fragment: MatchesFragment, private var items: List<Match>) :
     RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
     private var idsLocalList = listOf<Long>()
     private var isFromLocal = false
+    private lateinit var images: List<Images>
 
 
     constructor(
         fragment: MatchesFragment,
-        items: List<MatchEntity>,
+        items: List<Match>,
         idsList: MutableList<Long>,
         b: Boolean
     ) : this(fragment, items) {
         idsLocalList = idsList
         isFromLocal = b
     }
+
+    constructor(
+        matchesFragment: MatchesFragment,
+        items: List<Match>,
+        imagesList: List<Images>,
+        idsList: MutableList<Long>,
+        b: Boolean
+    )
+            : this(matchesFragment, items) {
+        idsLocalList = idsList
+        isFromLocal = b
+        images = imagesList
+    }
+
+
 
 
     class ViewHolder(@NonNull val itemBinding: OneMatchItemBinding) :
@@ -41,7 +59,7 @@ class MatchAdapter(val fragment: MatchesFragment, private var items: List<MatchE
 
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-         val item = items[position]
+        val item = items[position]
         holder.itemBinding.homeTeam.text = item.homeTeamName
         holder.itemBinding.awayTeam.text = item.awayTeamName
         if (item.status.equals("FINISHED")) {
@@ -50,10 +68,29 @@ class MatchAdapter(val fragment: MatchesFragment, private var items: List<MatchE
             holder.itemBinding.result.text = convertDateFormat(item.date)
         }
 
-        if(item.isFav){
+        if (item.isFav) {
             holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
         }
 
+        Log.i("found",images.size.toString())
+
+        for (id in 0 until images.size) {
+            if (images[id].id == item.homeTeamId) {
+                val media = images[id].crest
+                if (media !== null) {
+                    Glide.with(fragment)
+                        .load(media)
+                        .into(holder.itemBinding.homeImage)
+                } else {
+
+                    //  imageview.setImageResource(R.drawable.ic_launcher_background)
+                }
+            }
+            else{
+
+            }
+
+        }
 
         // item click
         holder.itemBinding.fav.setOnClickListener { view ->
@@ -90,15 +127,14 @@ class MatchAdapter(val fragment: MatchesFragment, private var items: List<MatchE
 //
 //                }
 
-            
-            if(!item.isFav){
-              //  holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
+
+            if (!item.isFav) {
+                //  holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
                 fragment.addToFav(item)
                 fragment.update(item)
             }
 
-     }
-
+        }
 
 
     }
