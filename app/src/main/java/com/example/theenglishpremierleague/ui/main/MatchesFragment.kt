@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.theenglishpremierleague.databinding.FragmentMainBinding
 import com.example.theenglishpremierleague.ui.data.local.Images
 import com.example.theenglishpremierleague.ui.data.local.Match
+import com.example.theenglishpremierleague.ui.helpers.FadeInLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -46,6 +47,8 @@ class MatchesFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
                 setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
             }
+        binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
+
         // get list of local ids and send it to adapter to colored hart
         val idsList = mutableListOf<Long>()
         viewModel.localList.observe(viewLifecycleOwner, Observer {

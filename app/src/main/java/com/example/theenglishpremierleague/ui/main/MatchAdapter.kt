@@ -3,6 +3,7 @@ package com.example.theenglishpremierleague.ui.main
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
@@ -13,12 +14,17 @@ import com.example.theenglishpremierleague.ui.data.local.Images
 import com.example.theenglishpremierleague.ui.data.local.Match
 import java.text.SimpleDateFormat
 import java.util.*
+import android.view.animation.AlphaAnimation
+
+
+
 
 class MatchAdapter(val fragment: MatchesFragment, private var items: List<Match>) :
     RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
     private var idsLocalList = listOf<Long>()
     private var isFromLocal = false
-    private lateinit var images: List<Images>
+    private  var images = listOf<Images>()
+    private val FADE_DURATION = 1000 //FADE_DURATION in milliseconds
 
 
     constructor(
@@ -60,6 +66,7 @@ class MatchAdapter(val fragment: MatchesFragment, private var items: List<Match>
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         val item = items[position]
+        setFadeAnimation(holder.itemView)
         holder.itemBinding.homeTeam.text = item.homeTeamName
         holder.itemBinding.awayTeam.text = item.awayTeamName
         if (item.status.equals("FINISHED")) {
@@ -129,7 +136,7 @@ class MatchAdapter(val fragment: MatchesFragment, private var items: List<Match>
 
 
             if (!item.isFav) {
-                //  holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
+                  holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
                 fragment.addToFav(item)
                 fragment.update(item)
             }
@@ -152,6 +159,12 @@ class MatchAdapter(val fragment: MatchesFragment, private var items: List<Match>
         val outputFormat = SimpleDateFormat("hh:mm", Locale.US)
         outputFormat.timeZone = TimeZone.getDefault()
         return outputFormat.format(date)
+    }
+
+    private fun setFadeAnimation(view: View) {
+        val anim = AlphaAnimation(0.0f, 1.0f)
+        anim.duration = FADE_DURATION.toLong()
+        view.startAnimation(anim)
     }
 }
 
