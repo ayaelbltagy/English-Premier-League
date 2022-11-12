@@ -8,15 +8,14 @@ import androidx.room.Query
 
 @Dao
 interface MatchDAO {
+
+    // To mark flag as a favorite item on fav click
+    @Query("UPDATE matches SET isFav=:value WHERE id = :id")
+    fun updateFlag (value: Boolean , id: Long)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addFavoriteMatches  (matches :  Match)
+    fun addAllMatches  (matches :  List<Match>)
 
     @Query("SELECT * FROM matches")
-    fun getFavoriteMatches () : LiveData<List<Match>>
-
-    @Query("DELETE FROM matches WHERE id = :id")
-    fun deleteFavoriteById(id: Long)
-
-    @Query("UPDATE matches SET isFav=:value WHERE id = :id")
-    fun updateIsFavValue(value: Boolean , id: Long)
+    fun getAllMatches () : LiveData<List<Match>>
 }

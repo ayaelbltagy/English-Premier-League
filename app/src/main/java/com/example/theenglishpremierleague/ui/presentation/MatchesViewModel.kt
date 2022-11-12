@@ -1,8 +1,8 @@
-package com.example.theenglishpremierleague.ui.main
+package com.example.theenglishpremierleague.ui.presentation
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
+import com.example.theenglishpremierleague.ui.data.local.Favorite
 import com.example.theenglishpremierleague.ui.data.local.Images
 import com.example.theenglishpremierleague.ui.data.local.LocalRepositoryImp
 import com.example.theenglishpremierleague.ui.data.local.Match
@@ -12,7 +12,6 @@ import com.example.theenglishpremierleague.ui.data.remote.APIService.API_KEY
 import com.example.theenglishpremierleague.ui.data.remote.RemoteRepositoryImp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.net.SocketTimeoutException
@@ -22,76 +21,51 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     // prepare local database
     private val database = getInstance(application)
     private var localRepositoryImp: LocalRepositoryImp
-    private var emptyList = mutableListOf<Match>() // empty list will fill it after fav click
-    private var _localLiveData = MutableLiveData<List<Match>>() // to add fav item
-    val localList: MediatorLiveData<List<Match>> = MediatorLiveData() // used for showing whatever on it
-    private var list: LiveData<List<Match>>
+    val favList: MediatorLiveData<List<Favorite>> = MediatorLiveData() // used for showing whatever on it
+    private var _favList: LiveData<List<Favorite>>
     private var listOfImages = listOf<Images>()
     private var imagesList = listOf<Images>()
+    private var _allMatchesList: LiveData<List<Match>>
+    val allMatchesList: MediatorLiveData<List<Match>> = MediatorLiveData()
 
     // prepare remote data
     private var remoteRepositoryImp: RemoteRepositoryImp
     private var _remoteLiveData = MutableLiveData<List<Match>>()
-    val remoteList: LiveData<List<Match>> get() = _remoteLiveData
+
 
     init {
         remoteRepositoryImp = RemoteRepositoryImp(APIService.ServerApi)
         localRepositoryImp = LocalRepositoryImp(database)
-        list = localRepositoryImp.getFavoriteMatches()
+        _favList = localRepositoryImp.getFavoriteMatches()
+        _allMatchesList = localRepositoryImp.getAllMatches()
 
         getListOfRefreshedMatches("TODAY")
         getListOfLocalMatches()
-        getImagesFromServer()
-       getPictures()
+        getListOfLocalFavMatches()
+        getImagesFromdb()
+
     }
 
     suspend fun getImagesfromdb() : List<Images> {
              withContext(Dispatchers.IO) {
                  listOfImages = localRepositoryImp.loadAllImage()
-
              }
               imagesList = listOfImages
-
          return imagesList
     }
 
-    private fun getPictures() {
+    private fun getImagesFromdb() {
         viewModelScope.launch {
             getImagesfromdb()
         }
     }
 
 
-    fun getImagesFromServer(){
-        viewModelScope.launch {
-            try {
-                val response = remoteRepositoryImp.getTeamsImages(API_KEY)
-                if (response != null) {
-                    val responseJsonObject = JSONObject(response)
-                    val jsonArray = responseJsonObject.getJSONArray("teams")
-                    for (i in 0 until jsonArray.length()) {
-                        val matchJson = jsonArray.getJSONObject(i)
-                        val id = matchJson.getLong("id")
-                        val imageUrl = matchJson.getString("crest")
-//                        var imagesHashMap : HashMap<Long, String> = HashMap<Long, String> ()
-//                        imagesHashMap.put(id,imageUrl)
-                        val model = Images(
-                            id,
-                            imageUrl,
-                        )
-
-                        withContext(Dispatchers.IO) {
-                            localRepositoryImp.insertALLImages(model)
-                        }
-                    }
-                }
-            } catch (ex: SocketTimeoutException) {
-
-            }
+    suspend fun saveImages(image:Images){
+        withContext(Dispatchers.IO){
+            localRepositoryImp.insertALLImages(image)
         }
     }
-
-
 
      fun getListOfRefreshedMatches(date : String) {
         viewModelScope.launch {
@@ -130,7 +104,10 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                         )
                         dataArrayList.add(model)
                     }
-                    _remoteLiveData.postValue(dataArrayList.toList())
+                   // _remoteLiveData.postValue(dataArrayList.toList())
+                    withContext(Dispatchers.IO) {
+                        localRepositoryImp.addAllMatches(dataArrayList.toList())
+                    }
                  }
             }
             catch (ex: SocketTimeoutException){
@@ -139,33 +116,37 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun getListOfLocalFavMatches() {
+        favList.addSource(_favList) {
+            favList.value = it
+        }
+    }
+
     fun getListOfLocalMatches() {
-        localList.addSource(list) {
-            localList.value = it
+        allMatchesList.addSource(_allMatchesList) {
+            allMatchesList.value = it
         }
     }
 
 
-    suspend fun saveFixtures(oneMatch: Match) {
+
+    suspend fun saveFixtures(favMatch: Favorite) {
         withContext(Dispatchers.IO) {
-            localRepositoryImp.addFavoriteMatches(oneMatch)
+            localRepositoryImp.addFavoriteMatches(favMatch)
         }
-        emptyList.add(oneMatch)
-        _localLiveData.value = emptyList
-        localList.value = _localLiveData.value
 
      }
 
-    suspend fun removeSourceFromFav (oneMatch: Match) {
+    suspend fun removeSourceFromFav (id:Long) {
         withContext(Dispatchers.IO) {
-           localRepositoryImp.deleteFavoriteById(oneMatch.id)
+           localRepositoryImp.deleteFavoriteById(id)
        }
 
      }
 
-    suspend fun updateItemToFav(item: Match) {
+    suspend fun updateFlag(flag:Boolean,id:Long) {
         withContext(Dispatchers.IO) {
-            localRepositoryImp.updateIsFavValue(true,item.id)
+            localRepositoryImp.updateFlag(flag,id)
         }
 
     }

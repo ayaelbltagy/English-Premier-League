@@ -2,14 +2,23 @@ package com.example.theenglishpremierleague.ui.data.local
 
 import androidx.lifecycle.LiveData
 
+
 interface LocalRepository {
 
-    fun addFavoriteMatches (matches :  Match)
-    fun getFavoriteMatches () : LiveData<List<Match>>
-    fun deleteFavoriteById(id: Long)
-    fun updateIsFavValue(value: Boolean , id: Long)
+    // Favorite
+     fun addFavoriteMatches  (match :  Favorite)
+     fun getFavoriteMatches () : LiveData<List<Favorite>>
+     fun deleteFavoriteById(id: Long)
+
+    // All matches
+    fun updateFlag (value: Boolean , id: Long)
+    fun addAllMatches  (matches :  List<Match>)
+    fun getAllMatches () : LiveData<List<Match>>
+
+    // Images
     fun insertALLImages (pic: Images)
     fun loadAllImage(): List<Images>
+
 
 
 }

@@ -1,4 +1,4 @@
-package com.example.theenglishpremierleague.ui.main
+package com.example.theenglishpremierleague.ui.presentation
 
 import android.content.Context
 import androidx.fragment.app.Fragment

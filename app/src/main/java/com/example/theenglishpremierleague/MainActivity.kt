@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.theenglishpremierleague.databinding.ActivityMainBinding
-import com.example.theenglishpremierleague.ui.main.SectionsPagerAdapter
+import com.example.theenglishpremierleague.ui.presentation.SectionsPagerAdapter
 import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {

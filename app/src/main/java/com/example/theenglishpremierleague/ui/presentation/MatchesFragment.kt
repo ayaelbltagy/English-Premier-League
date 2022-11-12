@@ -1,8 +1,7 @@
-package com.example.theenglishpremierleague.ui.main
+package com.example.theenglishpremierleague.ui.presentation
 
 //import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.theenglishpremierleague.databinding.FragmentMainBinding
+import com.example.theenglishpremierleague.ui.data.local.Favorite
 import com.example.theenglishpremierleague.ui.data.local.Images
-import com.example.theenglishpremierleague.ui.data.local.Match
-import com.example.theenglishpremierleague.ui.helpers.FadeInLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -47,40 +45,21 @@ class MatchesFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
                 setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
             }
-        binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
+        //   binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
 
-        // get list of local ids and send it to adapter to colored hart
-        val idsList = mutableListOf<Long>()
-        viewModel.localList.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                for (i in 0 until it.size) {
-                    if (!idsList.contains(it[i].id)) {
-                        idsList.add(it[i].id)
-
-                    }
-                }
-            }
-        })
         viewModel.text.observe(viewLifecycleOwner, Observer {
             // to check which view is selected now
             if (it.equals("1")) {
                 // show dialog till  get response
                 binding.statusLoadingWheel.visibility = View.VISIBLE
-                var imagesList = listOf<Images>()
-                runBlocking {
-                    imagesList = viewModel.getImagesfromdb()
 
-                }
-
-                viewModel.remoteList.observe(viewLifecycleOwner, Observer {
+                viewModel.allMatchesList.observe(viewLifecycleOwner, Observer {
                     it?.let {
                         // hide dialog as list is ready
                         binding.statusLoadingWheel.visibility = View.GONE
                         // setup my adapter
                         if (it.isNotEmpty()) {
-
-                            var adapter = MatchAdapter(this@MatchesFragment, it,imagesList, idsList, false)
-
+                            var adapter = MatchAdapter(this@MatchesFragment, it, false,1)
                             binding.recycler.adapter = adapter
                         } else {
                             // no item in get from server
@@ -91,9 +70,9 @@ class MatchesFragment : Fragment() {
                 })
             } else {
 
-                viewModel.localList.observe(viewLifecycleOwner, Observer {
+                viewModel.favList.observe(viewLifecycleOwner, Observer {
                     it?.let {
-                        var adapter = MatchAdapter(this@MatchesFragment, it, idsList, true)
+                        var adapter = MatchAdapter(this@MatchesFragment, it, true)
                         binding.recycler.adapter = adapter
                     }
                 })
@@ -105,7 +84,7 @@ class MatchesFragment : Fragment() {
 
         binding.view.setOnDateChangeListener(object : CalendarView.OnDateChangeListener {
             override fun onSelectedDayChange(p0: CalendarView, p1: Int, p2: Int, p3: Int) {
-                val selectedDate = p1.toString()+"-"+(p2 + 1).toString()+"-"+p3.toString()
+                val selectedDate = p1.toString() + "-" + (p2 + 1).toString() + "-" + p3.toString()
                 viewModel.getListOfRefreshedMatches(selectedDate)
 
             }
@@ -118,6 +97,38 @@ class MatchesFragment : Fragment() {
 
     }
 
+    // save to fav list
+    fun addToFav(favMatch: Favorite) {
+        runBlocking {
+            viewModel.saveFixtures(favMatch)
+        }
+
+    }
+
+    // remove only from fav list
+    fun removeFromFav(id: Long) {
+        runBlocking {
+            viewModel.removeSourceFromFav(id)
+        }
+    }
+
+    // update flag in all matches list
+    fun update(flag: Boolean, id: Long) {
+        runBlocking {
+            viewModel.updateFlag(flag, id)
+        }
+    }
+
+    // get images from online mood to offline mood
+    fun saveImage(imageURL: String, Id: Long) {
+        val model = Images(
+            Id,
+            imageURL,
+        )
+        runBlocking {
+            viewModel.saveImages(model)
+        }
+    }
 
     companion object {
         /**
@@ -146,21 +157,5 @@ class MatchesFragment : Fragment() {
         _binding = null
     }
 
-    fun addToFav(item: Match) {
-        runBlocking {
-            viewModel.saveFixtures(item)
-        }
-    }
 
-    fun removeFromFav(item: Match) {
-        runBlocking {
-            viewModel.removeSourceFromFav(item)
-        }
-    }
-
-    fun update(item: Match) {
-        runBlocking {
-            viewModel.updateItemToFav(item)
-        }
-    }
 }
