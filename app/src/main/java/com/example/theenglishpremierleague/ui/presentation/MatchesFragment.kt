@@ -1,6 +1,5 @@
 package com.example.theenglishpremierleague.ui.presentation
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,16 +14,10 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
 import android.widget.Toast
-import com.example.theenglishpremierleague.R
 import com.example.theenglishpremierleague.ui.helpers.FadeInLinearLayoutManager
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendarView
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
-
-
-
-
-
 
 /**
  * A placeholder fragment containing a simple view.
@@ -70,31 +63,6 @@ class MatchesFragment : Fragment() {
                         if (it.isNotEmpty()) {
                             var adapter = MatchAdapter(this@MatchesFragment, it, false,1)
                             binding.recycler.adapter = adapter
-//                            adapter.sedItemClickedToView {
-//                                    if (!it.isFav) {
-//                                        // mark in all matches list that is item is fav only view
-//                                        update(true, it.id)
-//                                        // add this item to fav list
-//                                        val modelFav = Favorite(
-//                                            it.id,
-//                                            it.status,
-//                                            it.date,
-//                                            it.homeTeamScore,
-//                                            it.awayTeamScore,
-//                                            it.homeTeamName,
-//                                            it.homeTeamId,
-//                                            it.awayTeamName,
-//                                            it.awayTeamId,
-//                                            true
-//                                        )
-//                                        addToFav(modelFav)
-//
-//                                    } else {
-//                                        update(false, it.id)
-//
-//
-//                                }
-//                            }
                         } else {
                             // no item in get from server
                             binding.statusLoadingWheel.visibility = View.GONE
