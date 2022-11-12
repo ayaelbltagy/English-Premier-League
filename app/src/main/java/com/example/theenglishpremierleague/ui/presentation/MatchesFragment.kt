@@ -15,6 +15,19 @@ import com.example.theenglishpremierleague.ui.data.local.Images
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
+import android.R
+import android.widget.Toast
+
+import devs.mulham.horizontalcalendar.HorizontalCalendar
+import devs.mulham.horizontalcalendar.HorizontalCalendarView
+
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+
+
+
+
+
+
 
 
 /**
@@ -80,22 +93,41 @@ class MatchesFragment : Fragment() {
         })
 
         binding.lifecycleOwner = viewLifecycleOwner
+        // Calendar
+
+        val startDate = Calendar.getInstance()
+        startDate.add(Calendar.MONTH, -1)
+
+        val endDate = Calendar.getInstance()
+        endDate.add(Calendar.MONTH, 1)
 
 
-        binding.view.setOnDateChangeListener(object : CalendarView.OnDateChangeListener {
-            override fun onSelectedDayChange(p0: CalendarView, p1: Int, p2: Int, p3: Int) {
-                val selectedDate = p1.toString() + "-" + (p2 + 1).toString() + "-" + p3.toString()
-                viewModel.getListOfRefreshedMatches(selectedDate)
+        val horizontalCalendar: HorizontalCalendar =
+            HorizontalCalendar.Builder(binding.root,binding.calendarView.id)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(5)
+                .build()
 
+        horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
+            override fun onDateSelected(date: Calendar?, position: Int) {
+                Toast.makeText(requireContext(), date?.get(Calendar.DAY_OF_MONTH).toString(),Toast.LENGTH_LONG).show()
+            }
+            override fun onCalendarScroll(
+                calendarView: HorizontalCalendarView,
+                dx: Int, dy: Int
+            ) {
             }
 
-
-        })
-
+            override fun onDateLongClicked(date: Calendar?, position: Int): Boolean {
+                return true
+            }
+        }
 
         return binding.root
 
     }
+
+
 
     // save to fav list
     fun addToFav(favMatch: Favorite) {

@@ -8,37 +8,30 @@
         android:layout_height="match_parent"
         android:background="@color/purple_500">
 
-        <ScrollView
-            android:id="@+id/horizontal"
+
+        <devs.mulham.horizontalcalendar.HorizontalCalendarView
+            android:id="@+id/calendarView"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:isScrollContainer="true"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/recycler"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints">
-
-            <CalendarView
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@color/teal_700"
-                tools:ignore="MissingClass,MissingConstraints" />
-        </ScrollView>
+            app:textColorSelected="#FFFF"
+            tools:ignore="MissingClass,MissingConstraints" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontal" />
+            app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
 
         <ProgressBar
