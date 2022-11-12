@@ -13,8 +13,6 @@ import com.example.theenglishpremierleague.ui.data.local.Images
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
-import android.widget.Toast
-import androidx.core.view.get
 import com.example.theenglishpremierleague.R
 import com.example.theenglishpremierleague.ui.helpers.FadeInLinearLayoutManager
 import devs.mulham.horizontalcalendar.HorizontalCalendar
@@ -53,7 +51,7 @@ class MatchesFragment : Fragment() {
                 setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
             }
          // binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
-
+        viewModel.getMatchesByFilter(getCurrentDate())
         viewModel.text.observe(viewLifecycleOwner, Observer {
             // to check which view is selected now
             if (it.equals("1")) {
@@ -67,15 +65,11 @@ class MatchesFragment : Fragment() {
                         binding.statusLoadingWheel.visibility = View.GONE
                         // setup my adapter
                         if (it.isNotEmpty()) {
-                            Toast.makeText(requireContext(),"value",Toast.LENGTH_LONG).show()
-
                             binding.noItems.visibility = View.GONE
                             binding.recycler.visibility = View.VISIBLE
                             var adapter = MatchAdapter(this@MatchesFragment, it, false,1)
                             binding.recycler.adapter = adapter
                         } else {
-                            Toast.makeText(requireContext(),"empty",Toast.LENGTH_LONG).show()
-
                             // no item in get from server
                             binding.statusLoadingWheel.visibility = View.GONE
                             binding.recycler.visibility = View.INVISIBLE
@@ -155,6 +149,11 @@ class MatchesFragment : Fragment() {
         return outputFormat.format(date)
     }
 
+    fun getCurrentDate(): String {
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        val date = Date()
+        return formatter.format(date)
+    }
 
     // save to fav list
     fun addToFav(favMatch: Favorite) {

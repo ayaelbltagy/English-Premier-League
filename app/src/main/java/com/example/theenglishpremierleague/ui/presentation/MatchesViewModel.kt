@@ -1,7 +1,6 @@
 package com.example.theenglishpremierleague.ui.presentation
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.theenglishpremierleague.ui.data.local.Favorite
 import com.example.theenglishpremierleague.ui.data.local.Images
@@ -15,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -29,42 +27,38 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     private var _favList: LiveData<List<Favorite>>
     private var listOfImages = listOf<Images>()
     private var imagesList = listOf<Images>()
-    private var _allMatchesList: LiveData<List<Match>>
+    private lateinit var _allMatchesList: LiveData<List<Match>>
     val allMatchesList: MediatorLiveData<List<Match>> = MediatorLiveData()
 
     // prepare remote data
     private var remoteRepositoryImp: RemoteRepositoryImp
     private var _remoteLiveData = MutableLiveData<List<Match>>()
 
-    fun getCurrentDate(): String {
-        val formatter = SimpleDateFormat("yyyy-MM-dd")
-        val date = Date()
-        return formatter.format(date)
-    }
+
 
     init {
         remoteRepositoryImp = RemoteRepositoryImp(APIService.ServerApi)
         localRepositoryImp = LocalRepositoryImp(database)
         _favList = localRepositoryImp.getFavoriteMatches()
-        _allMatchesList = localRepositoryImp.getAllMatches(getCurrentDate())
         getListOfRefreshedMatches()
-        getListOfLocalMatches()
         getListOfLocalFavMatches()
         getImagesFromdb()
 
     }
 
-    fun getMatchesByFilter(date:String){
-            localRepositoryImp.getAllMatches(date)
-            Log.i("test",_allMatchesList.value?.size.toString())
+    fun getMatchesByFilter(date: String) {
+        _allMatchesList = localRepositoryImp.getAllMatches(date)
+        allMatchesList.addSource(_allMatchesList) {
+            allMatchesList.value = it
+        }
     }
 
-    suspend fun getImagesfromdb() : List<Images> {
-             withContext(Dispatchers.IO) {
-                 listOfImages = localRepositoryImp.loadAllImage()
-             }
-              imagesList = listOfImages
-         return imagesList
+    suspend fun getImagesfromdb(): List<Images> {
+        withContext(Dispatchers.IO) {
+            listOfImages = localRepositoryImp.loadAllImage()
+        }
+        imagesList = listOfImages
+        return imagesList
     }
 
     private fun getImagesFromdb() {
@@ -74,16 +68,16 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     }
 
 
-    suspend fun saveImages(image:Images){
-        withContext(Dispatchers.IO){
+    suspend fun saveImages(image: Images) {
+        withContext(Dispatchers.IO) {
             localRepositoryImp.insertALLImages(image)
         }
     }
 
-     fun getListOfRefreshedMatches() {
+    fun getListOfRefreshedMatches() {
         viewModelScope.launch {
             try {
-                val response = remoteRepositoryImp.getAllMatches( API_KEY)
+                val response = remoteRepositoryImp.getAllMatches(API_KEY)
                 if (response != null) {
                     val responseJsonObject = JSONObject(response)
                     val dataArrayList: ArrayList<Match> = ArrayList()
@@ -95,9 +89,11 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                         val status = matchJson.getString("status")
                         val utcDate = matchJson.getString("utcDate")
                         val homeTeamScore =
-                            matchJson.getJSONObject("score").getJSONObject("fullTime").get("homeTeam")
+                            matchJson.getJSONObject("score").getJSONObject("fullTime")
+                                .get("homeTeam")
                         val awayTeamScore =
-                            matchJson.getJSONObject("score").getJSONObject("fullTime").get("awayTeam")
+                            matchJson.getJSONObject("score").getJSONObject("fullTime")
+                                .get("awayTeam")
                         val homeTeamName = matchJson.getJSONObject("homeTeam").getString("name")
                         val homeTeamId = matchJson.getJSONObject("homeTeam").getLong("id")
                         val awayTeamName = matchJson.getJSONObject("awayTeam").getString("name")
@@ -121,13 +117,12 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                         )
                         dataArrayList.add(model)
                     }
-                   // _remoteLiveData.postValue(dataArrayList.toList())
+                    // _remoteLiveData.postValue(dataArrayList.toList())
                     withContext(Dispatchers.IO) {
                         localRepositoryImp.addAllMatches(dataArrayList.toList())
                     }
-                 }
-            }
-            catch (ex: Exception){
+                }
+            } catch (ex: Exception) {
 
             }
         }
@@ -139,31 +134,24 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun getListOfLocalMatches() {
-        allMatchesList.addSource(_allMatchesList) {
-            allMatchesList.value = it
-        }
-    }
-
-
 
     suspend fun saveFixtures(favMatch: Favorite) {
         withContext(Dispatchers.IO) {
             localRepositoryImp.addFavoriteMatches(favMatch)
         }
 
-     }
+    }
 
-    suspend fun removeSourceFromFav (id:Long) {
+    suspend fun removeSourceFromFav(id: Long) {
         withContext(Dispatchers.IO) {
-           localRepositoryImp.deleteFavoriteById(id)
-       }
+            localRepositoryImp.deleteFavoriteById(id)
+        }
 
-     }
+    }
 
-    suspend fun updateFlag(flag:Boolean,id:Long) {
+    suspend fun updateFlag(flag: Boolean, id: Long) {
         withContext(Dispatchers.IO) {
-            localRepositoryImp.updateFlag(flag,id)
+            localRepositoryImp.updateFlag(flag, id)
         }
 
     }
@@ -176,8 +164,6 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     fun setIndex(index: Int) {
         _index.value = index
     }
-
-
 
 
 }
