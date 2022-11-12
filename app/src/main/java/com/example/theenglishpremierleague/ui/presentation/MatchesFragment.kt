@@ -1,11 +1,10 @@
 package com.example.theenglishpremierleague.ui.presentation
 
-//import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,15 +14,12 @@ import com.example.theenglishpremierleague.ui.data.local.Images
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
-import android.R
 import android.widget.Toast
-
+import com.example.theenglishpremierleague.R
+import com.example.theenglishpremierleague.ui.helpers.FadeInLinearLayoutManager
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendarView
-
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
-
-
 
 
 
@@ -58,7 +54,7 @@ class MatchesFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
                 setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
             }
-        //   binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
+         //  binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
 
         viewModel.text.observe(viewLifecycleOwner, Observer {
             // to check which view is selected now
@@ -74,6 +70,31 @@ class MatchesFragment : Fragment() {
                         if (it.isNotEmpty()) {
                             var adapter = MatchAdapter(this@MatchesFragment, it, false,1)
                             binding.recycler.adapter = adapter
+//                            adapter.sedItemClickedToView {
+//                                    if (!it.isFav) {
+//                                        // mark in all matches list that is item is fav only view
+//                                        update(true, it.id)
+//                                        // add this item to fav list
+//                                        val modelFav = Favorite(
+//                                            it.id,
+//                                            it.status,
+//                                            it.date,
+//                                            it.homeTeamScore,
+//                                            it.awayTeamScore,
+//                                            it.homeTeamName,
+//                                            it.homeTeamId,
+//                                            it.awayTeamName,
+//                                            it.awayTeamId,
+//                                            true
+//                                        )
+//                                        addToFav(modelFav)
+//
+//                                    } else {
+//                                        update(false, it.id)
+//
+//
+//                                }
+//                            }
                         } else {
                             // no item in get from server
                             binding.statusLoadingWheel.visibility = View.GONE
@@ -91,6 +112,8 @@ class MatchesFragment : Fragment() {
                 })
             }
         })
+
+
 
         binding.lifecycleOwner = viewLifecycleOwner
         // Calendar

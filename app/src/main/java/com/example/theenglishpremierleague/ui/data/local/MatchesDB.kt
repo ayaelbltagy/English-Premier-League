@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [Match::class,Images::class,Favorite::class],version =2,exportSchema = false)
+@Database(entities = [Match::class,Images::class,Favorite::class],version =1,exportSchema = false)
 abstract class MatchesDB : RoomDatabase() {
 
     // to access database you should get from DAO

@@ -15,6 +15,8 @@ data class Match (
      val homeTeamId :Long,
      val awayTeamName : String,
      val awayTeamId :Long,
-     val isFav :Boolean
+     val isFav :Boolean,
+     val startDate :String,
+     val endDate :String
       )
 

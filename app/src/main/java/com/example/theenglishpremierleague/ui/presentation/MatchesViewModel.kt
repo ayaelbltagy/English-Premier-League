@@ -89,6 +89,8 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                         val homeTeamId = matchJson.getJSONObject("homeTeam").getLong("id")
                         val awayTeamName = matchJson.getJSONObject("awayTeam").getString("name")
                         val awayTeamId = matchJson.getJSONObject("awayTeam").getLong("id")
+                        val startDate = matchJson.getJSONObject("season").getString("startDate")
+                        val endDate = matchJson.getJSONObject("season").getString("endDate")
 
                         val model = Match(
                             id,
@@ -100,7 +102,9 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                             homeTeamId,
                             awayTeamName,
                             awayTeamId,
-                            false
+                            false,
+                            startDate,
+                            endDate
                         )
                         dataArrayList.add(model)
                     }

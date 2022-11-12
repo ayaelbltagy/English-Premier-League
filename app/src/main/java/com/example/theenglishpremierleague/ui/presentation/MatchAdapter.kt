@@ -21,7 +21,6 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
 
     private var isFavList = false
     private val FADE_DURATION = 1000 //FADE_DURATION in milliseconds
-    private val index_row = -1
     private lateinit var fragment: MatchesFragment
     private var items: List<Match> = ArrayList()
     private var favList: List<Favorite> = ArrayList()
@@ -38,9 +37,23 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
         this.favList = favList
     }
 
+    var onItemClick: ((Match) -> Unit)? = null
+    fun sedItemClickedToView(action: (Match) -> Unit) {
+        this.onItemClick = action
 
-    class ViewHolder(@NonNull val itemBinding: OneMatchItemBinding) :
-        RecyclerView.ViewHolder(itemBinding.root)
+    }
+
+
+    inner class ViewHolder(@NonNull val itemBinding: OneMatchItemBinding) : RecyclerView.ViewHolder(itemBinding.root){
+        init {
+            onItemClick?.let {
+                itemBinding.root.setOnClickListener {
+
+
+                }
+            }
+        }
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,7 +64,10 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
 
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+      //  setFadeAnimation(holder.itemView)
         if (items.size > 0 && !isFavList) {
+            holder.itemBinding.fav.visibility = View.VISIBLE
+
             // show list off all matches
             val item = items[position]
             holder.itemBinding.homeTeam.text = item.homeTeamName
@@ -64,7 +80,11 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
             }
 
             if (item.isFav) {
-                //  holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
+                holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
+            }
+            else{
+                holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_shadow_24dp)
+
             }
 
             var homeImageURL = "https://crests.football-data.org/" + item.homeTeamId + ".png"
@@ -79,8 +99,7 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
             holder.itemBinding.homeTeam.text = favList.homeTeamName
             holder.itemBinding.awayTeam.text = favList.awayTeamName
             if (favList.status.equals("FINISHED")) {
-                holder.itemBinding.result.text =
-                    favList.homeTeamScore + "" + "-" + "" + favList.awayTeamScore
+                holder.itemBinding.result.text = favList.homeTeamScore + "" + "-" + "" + favList.awayTeamScore
             } else {
                 holder.itemBinding.result.text = convertDateFormat(favList.date)
             }
@@ -97,38 +116,38 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
 
 
         // item click
-        holder.itemBinding.root.setOnClickListener { view ->
-            // index_row == position
+//        holder.itemBinding.fav.setOnClickListener { view ->
 
-            if (isFavList) {
-                // remove this item from fav
-                fragment.removeFromFav(favList[position].id)
-            } else {
-                if (!items[position].isFav) {
-                    // holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
-                    // add this item to fav list
-                    val modelFav = Favorite(
-                        items[position].id,
-                        items[position].status,
-                        items[position].date,
-                        items[position].homeTeamScore,
-                        items[position].awayTeamScore,
-                        items[position].homeTeamName,
-                        items[position].homeTeamId,
-                        items[position].awayTeamName,
-                        items[position].awayTeamId,
-                        true
-                    )
-                    fragment.addToFav(modelFav)
-                    // mark in all matches list that is item is fav only view
-                    fragment.update(true, items[position].id)
-                } else {
-                    //  holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_shadow_24dp)
-                    fragment.update(false, items[position].id)
-
-                }
-            }
-        }
+//
+//            if (isFavList) {
+//                // remove this item from fav
+//                fragment.removeFromFav(favList[position].id)
+//            } else {
+//                if (!items[position].isFav) {
+//                    // mark in all matches list that is item is fav only view
+//                    fragment.update(true, items[position].id)
+//                    // add this item to fav list
+//                    val modelFav = Favorite(
+//                        items[position].id,
+//                        items[position].status,
+//                        items[position].date,
+//                        items[position].homeTeamScore,
+//                        items[position].awayTeamScore,
+//                        items[position].homeTeamName,
+//                        items[position].homeTeamId,
+//                        items[position].awayTeamName,
+//                        items[position].awayTeamId,
+//                        true
+//                    )
+//                    fragment.addToFav(modelFav)
+//
+//                } else {
+//                    fragment.update(false, items[position].id)
+//                    holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_shadow_24dp)
+//
+//                }
+//            }
+//        }
     }
 
 
