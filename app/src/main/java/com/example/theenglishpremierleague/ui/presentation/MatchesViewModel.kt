@@ -1,6 +1,6 @@
 package com.example.theenglishpremierleague.ui.presentation
 
-import android.app.Application
+ import android.app.Application
 import androidx.lifecycle.*
 import com.example.theenglishpremierleague.ui.data.local.Favorite
 import com.example.theenglishpremierleague.ui.data.local.Images
@@ -18,8 +18,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MatchesViewModel(application: Application) : AndroidViewModel(application) {
+import androidx.lifecycle.MutableLiveData
 
+
+
+
+class MatchesViewModel(application: Application) : AndroidViewModel(application) {
+    private var isDateFound = false
+     var date = MutableLiveData<String> ()
+    val selectedDay: LiveData<String> get() = date
     // prepare local database
     private val database = getInstance(application)
     private var localRepositoryImp: LocalRepositoryImp
@@ -43,10 +50,10 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         getListOfRefreshedMatches()
         getListOfLocalFavMatches()
         getImagesFromdb()
+     }
 
-    }
 
-    fun getMatchesByFilter(date: String) {
+     fun getMatchesByFilter(date: String) {
         _allMatchesList = localRepositoryImp.getAllMatches(date)
         allMatchesList.addSource(_allMatchesList) {
             allMatchesList.value = it
@@ -117,6 +124,17 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                         )
                         dataArrayList.add(model)
                     }
+                    if(dataArrayList.size>0){
+                        // to filter by next day that has matches
+                        for (i in 0..dataArrayList.size) {
+                            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                            val strDate = sdf.parse(dataArrayList[i].date)
+                            if (!isDateFound && Date().before(strDate)) {
+                                date.postValue(dataArrayList[i].date)
+                                isDateFound = true
+                            }
+                        }
+                    }
                     // _remoteLiveData.postValue(dataArrayList.toList())
                     withContext(Dispatchers.IO) {
                         localRepositoryImp.addAllMatches(dataArrayList.toList())
@@ -128,6 +146,11 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun getCurrentDate(): String {
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")
+        val date = Date()
+        return formatter.format(date)
+    }
     fun getListOfLocalFavMatches() {
         favList.addSource(_favList) {
             favList.value = it
