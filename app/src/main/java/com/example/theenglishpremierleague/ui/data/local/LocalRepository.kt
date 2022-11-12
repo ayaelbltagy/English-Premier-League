@@ -13,7 +13,7 @@ interface LocalRepository {
     // All matches
     fun updateFlag (value: Boolean , id: Long)
     fun addAllMatches  (matches :  List<Match>)
-    fun getAllMatches () : LiveData<List<Match>>
+    fun getAllMatches (date:String) : LiveData<List<Match>>
 
     // Images
     fun insertALLImages (pic: Images)

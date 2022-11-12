@@ -32,9 +32,8 @@ class LocalRepositoryImp (private val database :MatchesDB): LocalRepository {
     override fun addAllMatches(matches: List<Match>) {
         database.getMatchesFromDao().addAllMatches(matches)
     }
-
-    override fun getAllMatches(): LiveData<List<Match>> {
-        return  database.getMatchesFromDao().getAllMatches()
+    override fun getAllMatches(date:String): LiveData<List<Match>> {
+        return  database.getMatchesFromDao().getAllMatches(date)
     }
 
 

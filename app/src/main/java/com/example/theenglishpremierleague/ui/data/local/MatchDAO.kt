@@ -16,6 +16,7 @@ interface MatchDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAllMatches  (matches :  List<Match>)
 
-    @Query("SELECT * FROM matches")
-    fun getAllMatches () : LiveData<List<Match>>
+    @Query("SELECT * FROM matches WHERE startDate = :date")
+    fun getAllMatches (date:String) : LiveData<List<Match>>
+
 }

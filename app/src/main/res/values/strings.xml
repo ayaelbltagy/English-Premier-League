@@ -5,5 +5,5 @@
     <string name="matches">Fixtures </string>
     <string name="fav">Favorite </string>
     <string name="no_fav">No items in your favorite</string>
-    <string name="data_error">Error in getting data .... try gain later</string>
+    <string name="data_error">No matches found at this day</string>
   </resources>

@@ -1,6 +1,7 @@
 package com.example.theenglishpremierleague.ui.presentation
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.theenglishpremierleague.ui.data.local.Favorite
 import com.example.theenglishpremierleague.ui.data.local.Images
@@ -15,6 +16,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.net.SocketTimeoutException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MatchesViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -32,18 +36,27 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     private var remoteRepositoryImp: RemoteRepositoryImp
     private var _remoteLiveData = MutableLiveData<List<Match>>()
 
+    fun getCurrentDate(): String {
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        val date = Date()
+        return formatter.format(date)
+    }
 
     init {
         remoteRepositoryImp = RemoteRepositoryImp(APIService.ServerApi)
         localRepositoryImp = LocalRepositoryImp(database)
         _favList = localRepositoryImp.getFavoriteMatches()
-        _allMatchesList = localRepositoryImp.getAllMatches()
-
-        getListOfRefreshedMatches("TODAY")
+        _allMatchesList = localRepositoryImp.getAllMatches(getCurrentDate())
+        getListOfRefreshedMatches()
         getListOfLocalMatches()
         getListOfLocalFavMatches()
         getImagesFromdb()
 
+    }
+
+    fun getMatchesByFilter(date:String){
+            localRepositoryImp.getAllMatches(date)
+            Log.i("test",_allMatchesList.value?.size.toString())
     }
 
     suspend fun getImagesfromdb() : List<Images> {
@@ -67,10 +80,10 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-     fun getListOfRefreshedMatches(date : String) {
+     fun getListOfRefreshedMatches() {
         viewModelScope.launch {
             try {
-                val response = remoteRepositoryImp.getAllMatches(date, "")
+                val response = remoteRepositoryImp.getAllMatches( API_KEY)
                 if (response != null) {
                     val responseJsonObject = JSONObject(response)
                     val dataArrayList: ArrayList<Match> = ArrayList()

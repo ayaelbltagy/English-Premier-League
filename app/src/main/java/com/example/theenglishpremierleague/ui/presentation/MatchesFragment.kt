@@ -14,11 +14,15 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
 import android.widget.Toast
+import androidx.core.view.get
 import com.example.theenglishpremierleague.R
 import com.example.theenglishpremierleague.ui.helpers.FadeInLinearLayoutManager
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendarView
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import java.text.SimpleDateFormat
+import java.util.Calendar.AUGUST
+import java.util.Calendar.MAY
 
 /**
  * A placeholder fragment containing a simple view.
@@ -48,13 +52,14 @@ class MatchesFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
                 setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
             }
-          binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
+         // binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
 
         viewModel.text.observe(viewLifecycleOwner, Observer {
             // to check which view is selected now
             if (it.equals("1")) {
                 // show dialog till  get response
                 binding.statusLoadingWheel.visibility = View.VISIBLE
+                binding.calendarView.visibility = View.VISIBLE
 
                 viewModel.allMatchesList.observe(viewLifecycleOwner, Observer {
                     it?.let {
@@ -62,11 +67,15 @@ class MatchesFragment : Fragment() {
                         binding.statusLoadingWheel.visibility = View.GONE
                         // setup my adapter
                         if (it.isNotEmpty()) {
+                            Toast.makeText(requireContext(),"value",Toast.LENGTH_LONG).show()
+
                             binding.noItems.visibility = View.GONE
                             binding.recycler.visibility = View.VISIBLE
                             var adapter = MatchAdapter(this@MatchesFragment, it, false,1)
                             binding.recycler.adapter = adapter
                         } else {
+                            Toast.makeText(requireContext(),"empty",Toast.LENGTH_LONG).show()
+
                             // no item in get from server
                             binding.statusLoadingWheel.visibility = View.GONE
                             binding.recycler.visibility = View.INVISIBLE
@@ -77,7 +86,7 @@ class MatchesFragment : Fragment() {
                     }
                 })
             } else {
-
+                binding.calendarView.visibility = View.GONE
                 viewModel.favList.observe(viewLifecycleOwner, Observer {
                     it?.let {
                         if(it.size>0){
@@ -102,15 +111,18 @@ class MatchesFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         // Calendar
-
         val startDate = Calendar.getInstance()
-        startDate.add(Calendar.MONTH, -1)
+        startDate.set(Calendar.MONTH, AUGUST)
+        startDate.set(Calendar.DAY_OF_MONTH, 5)
+        startDate.set(Calendar.YEAR,2022)
 
         val endDate = Calendar.getInstance()
-        endDate.add(Calendar.MONTH, 1)
+        endDate.set(Calendar.MONTH, MAY)
+        endDate.set(Calendar.DAY_OF_MONTH, 28)
+        endDate.set(Calendar.YEAR,2023)
 
 
-        val horizontalCalendar: HorizontalCalendar =
+          val horizontalCalendar: HorizontalCalendar =
             HorizontalCalendar.Builder(binding.root,binding.calendarView.id)
                 .range(startDate, endDate)
                 .datesNumberOnScreen(5)
@@ -118,12 +130,12 @@ class MatchesFragment : Fragment() {
 
         horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
-                Toast.makeText(requireContext(), date?.get(Calendar.DAY_OF_MONTH).toString(),Toast.LENGTH_LONG).show()
-            }
-            override fun onCalendarScroll(
-                calendarView: HorizontalCalendarView,
-                dx: Int, dy: Int
-            ) {
+                val selectedMonth = date?.get(Calendar.MONTH).toString()
+                val month = selectedMonth.toInt()+1
+                val date = date?.get(Calendar.YEAR).toString()+"-"+month+"-"+date?.get(Calendar.DAY_OF_MONTH).toString()
+                viewModel.getMatchesByFilter(convertDateFormat(date))
+             }
+            override fun onCalendarScroll(calendarView: HorizontalCalendarView, dx: Int, dy: Int) {
             }
 
             override fun onDateLongClicked(date: Calendar?, position: Int): Boolean {
@@ -134,7 +146,14 @@ class MatchesFragment : Fragment() {
         return binding.root
 
     }
-
+    fun convertDateFormat(input: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        inputFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val date = inputFormat.parse(input)
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        outputFormat.timeZone = TimeZone.getDefault()
+        return outputFormat.format(date)
+    }
 
 
     // save to fav list
