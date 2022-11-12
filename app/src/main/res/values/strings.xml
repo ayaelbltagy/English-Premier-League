@@ -4,4 +4,6 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="matches">Fixtures </string>
     <string name="fav">Favorite </string>
+    <string name="no_fav">No items in your favorite</string>
+    <string name="data_error">Error in getting data .... try gain later</string>
   </resources>

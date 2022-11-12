@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
 import android.widget.Toast
+import com.example.theenglishpremierleague.R
 import com.example.theenglishpremierleague.ui.helpers.FadeInLinearLayoutManager
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendarView
@@ -47,7 +48,7 @@ class MatchesFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
                 setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
             }
-         //  binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
+          binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
 
         viewModel.text.observe(viewLifecycleOwner, Observer {
             // to check which view is selected now
@@ -61,11 +62,16 @@ class MatchesFragment : Fragment() {
                         binding.statusLoadingWheel.visibility = View.GONE
                         // setup my adapter
                         if (it.isNotEmpty()) {
+                            binding.noItems.visibility = View.GONE
+                            binding.recycler.visibility = View.VISIBLE
                             var adapter = MatchAdapter(this@MatchesFragment, it, false,1)
                             binding.recycler.adapter = adapter
                         } else {
                             // no item in get from server
                             binding.statusLoadingWheel.visibility = View.GONE
+                            binding.recycler.visibility = View.INVISIBLE
+                            binding.noItems.visibility = View.VISIBLE
+                            binding.noItems.setText(activity?.resources?.getString(R.string.data_error))
                         }
 
                     }
@@ -74,8 +80,19 @@ class MatchesFragment : Fragment() {
 
                 viewModel.favList.observe(viewLifecycleOwner, Observer {
                     it?.let {
-                        var adapter = MatchAdapter(this@MatchesFragment, it, true)
-                        binding.recycler.adapter = adapter
+                        if(it.size>0){
+                            binding.noItems.visibility = View.GONE
+                            binding.recycler.visibility = View.VISIBLE
+                            var adapter = MatchAdapter(this@MatchesFragment, it, true)
+                            binding.recycler.adapter = adapter
+                        }
+                        else{
+                            binding.recycler.visibility = View.INVISIBLE
+                            binding.noItems.visibility = View.VISIBLE
+                            binding.noItems.setText(activity?.resources?.getString(R.string.no_fav))
+
+                        }
+
                     }
                 })
             }

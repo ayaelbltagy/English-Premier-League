@@ -21,7 +21,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     // prepare local database
     private val database = getInstance(application)
     private var localRepositoryImp: LocalRepositoryImp
-    val favList: MediatorLiveData<List<Favorite>> = MediatorLiveData() // used for showing whatever on it
+    val favList: MediatorLiveData<List<Favorite>> = MediatorLiveData()
     private var _favList: LiveData<List<Favorite>>
     private var listOfImages = listOf<Images>()
     private var imagesList = listOf<Images>()
@@ -70,7 +70,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
      fun getListOfRefreshedMatches(date : String) {
         viewModelScope.launch {
             try {
-                val response = remoteRepositoryImp.getAllMatches(date, API_KEY)
+                val response = remoteRepositoryImp.getAllMatches(date, "")
                 if (response != null) {
                     val responseJsonObject = JSONObject(response)
                     val dataArrayList: ArrayList<Match> = ArrayList()
@@ -114,7 +114,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                     }
                  }
             }
-            catch (ex: SocketTimeoutException){
+            catch (ex: Exception){
 
             }
         }
