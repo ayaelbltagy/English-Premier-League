@@ -16,14 +16,9 @@ class RepositoryImp(private val local:LocalRepository,private val remote:RemoteR
 
     override fun updateFlag(value: Boolean, id: Long) = local.updateFlag(value,id)
 
-    override fun addAllMatches(matches: List<Match>) {
-        TODO("Not yet implemented")
-    }
+    override fun addAllMatches(matches: List<Match>) = local.addAllMatches(matches)
 
-    override fun getAllMatches(date: String): LiveData<List<Match>> {
-        TODO("Not yet implemented")
-    }
-
+    override fun getAllMatches(date: String): LiveData<List<Match>> = local.getAllMatches(date)
 
     override suspend fun getAllRemoteMatches(key: String): String = remote.getAllRemoteMatches(key)
 

@@ -15,6 +15,8 @@ import devs.mulham.horizontalcalendar.HorizontalCalendarView
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.coroutines.runBlocking
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Calendar.AUGUST
@@ -30,7 +32,7 @@ class MatchesFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var viewModel: MatchesViewModel
+    private  val viewModel: MatchesViewModel by sharedViewModel()
 
 
     override fun onCreateView(
@@ -43,11 +45,11 @@ class MatchesFragment : Fragment() {
         binding.lifecycleOwner = this
         // prepare view model
         val application = requireNotNull(this.activity).application
-        val viewModelFactory = ViewModelFactory(application)
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
-                setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-            }
+       // val viewModelFactory = ViewModelFactory(application)
+//        viewModel =
+//            ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
+//                setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
+//            }
         // binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
         viewModel.selectedDay.observe(viewLifecycleOwner, Observer {
             if (it.isNullOrEmpty()) {

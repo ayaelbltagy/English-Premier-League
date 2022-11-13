@@ -11,22 +11,22 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 object APIService {
 
     private const val BASE_URL = "https://api.football-data.org/"
-    const val API_KEY = "eeaf1766a5b74afa8ad221196853c1be"
+    const val API_KEY = ""
     // moshi is a lib used to convert json response to string
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
+//
+//    private val retrofit = Retrofit.Builder()
+//        .addConverterFactory(ScalarsConverterFactory.create())
+//        .addConverterFactory(MoshiConverterFactory.create(moshi))
+//        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+//        .baseUrl(BASE_URL)
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
 
-    private val retrofit = Retrofit.Builder()
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    object ServerApi {
-        val retrofitService: ServerAPIs = retrofit.create(ServerAPIs::class.java)
-    }
+//    object ServerApi {
+//        val retrofitService: ServerAPIs = retrofit.create(ServerAPIs::class.java)
+//    }
 
 }

@@ -1,15 +1,10 @@
 package com.example.theenglishpremierleague.ui.presentation
 
- import android.app.Application
- import android.util.Log
- import androidx.lifecycle.*
+import android.util.Log
+import androidx.lifecycle.*
+import com.example.theenglishpremierleague.ui.data.Repository
 import com.example.theenglishpremierleague.ui.data.local.Favorite
- import com.example.theenglishpremierleague.ui.data.local.LocalRepositoryImp
 import com.example.theenglishpremierleague.ui.data.local.Match
-import com.example.theenglishpremierleague.ui.data.local.MatchesDB.Companion.getInstance
-import com.example.theenglishpremierleague.ui.data.remote.APIService
-import com.example.theenglishpremierleague.ui.data.remote.APIService.API_KEY
-import com.example.theenglishpremierleague.ui.data.remote.RemoteRepositoryImp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -17,57 +12,49 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
-import androidx.lifecycle.MutableLiveData
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-
-class MatchesViewModel(application: Application) : AndroidViewModel(application) {
-      var date = MutableLiveData<String> ()
+class MatchesViewModel(private val repository: Repository) : ViewModel() {
+    var date = MutableLiveData<String>()
     val selectedDay: LiveData<String> get() = date
+
     // prepare local database
-    private val database = getInstance(application)
-    private var localRepositoryImp: LocalRepositoryImp
+
     val favList: MediatorLiveData<List<Favorite>> = MediatorLiveData()
     private var _favList: LiveData<List<Favorite>>
     private lateinit var _allMatchesList: LiveData<List<Match>>
     val allMatchesList: MediatorLiveData<List<Match>> = MediatorLiveData()
 
-    // prepare remote data
-    private var remoteRepositoryImp: RemoteRepositoryImp
-
 
 
     init {
-        remoteRepositoryImp = RemoteRepositoryImp(APIService.ServerApi)
-        localRepositoryImp = LocalRepositoryImp(database)
-        _favList = localRepositoryImp.getFavoriteMatches()
         getListOfRefreshedMatches()
+        _favList = repository.getFavoriteMatches()
         getListOfLocalFavMatches()
-     }
+    }
 
 
-     fun getMatchesByFilter(date: String) {
-        _allMatchesList = localRepositoryImp.getAllMatches(date)
-         Log.i("testDate",_allMatchesList.value?.size.toString())
+    fun getMatchesByFilter(date: String) {
+        _allMatchesList = repository.getAllMatches(date)
         allMatchesList.addSource(_allMatchesList) {
             allMatchesList.value = it
         }
     }
 
 
-
     fun getListOfRefreshedMatches() {
         viewModelScope.launch {
             try {
-                val response = remoteRepositoryImp.getAllRemoteMatches(API_KEY)
+                val response = repository.getAllRemoteMatches("eeaf1766a5b74afa8ad221196853c1be")
                 if (response != null) {
+                    Log.i("test",response)
+
                     val responseJsonObject = JSONObject(response)
                     val dataArrayList: ArrayList<Match> = ArrayList()
                     val jsonArray = responseJsonObject.getJSONArray("matches")
                     for (i in 0 until jsonArray.length()) {
-                         val matchJson = jsonArray.getJSONObject(i)
+                        val matchJson = jsonArray.getJSONObject(i)
                         val id = matchJson.getLong("id")
                         val status = matchJson.getString("status")
                         val utcDate = matchJson.getString("utcDate")
@@ -100,25 +87,31 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                         )
                         dataArrayList.add(model)
                     }
-                    if(dataArrayList.size>0){
+                    if (dataArrayList.size > 0) {
                         // to filter by next day that has matches
                         for (i in 0..dataArrayList.size) {
 
                             val dateFormat = SimpleDateFormat("yyyy-MM-dd")
                             val currentDateFormat = dateFormat.parse(getCurrentDate())
-                             val matchDate = dateFormat.parse(convertDateFormat(dataArrayList[i].playingDate))
-                             if(matchDate.equals(currentDateFormat) || matchDate.after(currentDateFormat)){
-                                 Log.i("Date",convertDateFormat(dataArrayList[i].playingDate))
+                            val matchDate =
+                                dateFormat.parse(convertDateFormat(dataArrayList[i].playingDate))
+                            if (matchDate.equals(currentDateFormat) || matchDate.after(
+                                    currentDateFormat
+                                )
+                            ) {
+                                Log.i("Date", convertDateFormat(dataArrayList[i].playingDate))
                                 date.postValue(convertDateFormat(dataArrayList[i].playingDate))
-                                 break
+                                break
                             }
 
                         }
                     }
-                     withContext(Dispatchers.IO) {
-                        localRepositoryImp.addAllMatches(dataArrayList.toList())
+                    withContext(Dispatchers.IO) {
+                        Log.i("listSize", dataArrayList.toList().size.toString())
+                        repository.addAllMatches(dataArrayList.toList())
                     }
                 }
+
             } catch (ex: Exception) {
                 date.postValue("")
 
@@ -135,11 +128,13 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         outputFormat.timeZone = TimeZone.getDefault()
         return outputFormat.format(date)
     }
+
     fun getCurrentDate(): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd")
         val date = Date()
         return formatter.format(date)
     }
+
     fun getListOfLocalFavMatches() {
         favList.addSource(_favList) {
             favList.value = it
@@ -149,21 +144,21 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
 
     suspend fun saveFixtures(favMatch: Favorite) {
         withContext(Dispatchers.IO) {
-            localRepositoryImp.addFavoriteMatches(favMatch)
+            repository.addFavoriteMatches(favMatch)
         }
 
     }
 
     suspend fun removeSourceFromFav(id: Long) {
         withContext(Dispatchers.IO) {
-            localRepositoryImp.deleteFavoriteById(id)
+            repository.deleteFavoriteById(id)
         }
 
     }
 
     suspend fun updateFlag(flag: Boolean, id: Long) {
         withContext(Dispatchers.IO) {
-            localRepositoryImp.updateFlag(flag, id)
+            repository.updateFlag(flag, id)
         }
 
     }

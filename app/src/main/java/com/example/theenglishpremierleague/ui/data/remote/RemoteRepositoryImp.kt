@@ -1,10 +1,10 @@
 package com.example.theenglishpremierleague.ui.data.remote
 
-class RemoteRepositoryImp(private val api: APIService.ServerApi) : RemoteRepository {
+class RemoteRepositoryImp(private val api: ServerAPIs) : RemoteRepository {
 
 
     override suspend fun getAllRemoteMatches(key: String): String {
-        return api.retrofitService.getAllMatches(key)
+        return api.getAllMatches(key)
     }
 
 
