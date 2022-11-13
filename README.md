@@ -19,7 +19,7 @@ MVVM -> to separates views from business logic.
 Kotlin coroutines -> to simplify code that executes asynchronously.
 Retrofit library -> to fetch data from server then convert to json.
 Room -> sqlite database to save filter and “favorite” matches.
-glide and coil-kt -> for images.
+glide and coil-kt -> for show images.
 
 #4. UI
 
