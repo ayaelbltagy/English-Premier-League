@@ -11,6 +11,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 object APIService {
 
     private const val BASE_URL = "https://api.football-data.org/"
+    const val API_KEY = "eeaf1766a5b74afa8ad221196853c1be"
 
     // moshi is a lib used to convert json response to string
     private val moshi = Moshi.Builder()

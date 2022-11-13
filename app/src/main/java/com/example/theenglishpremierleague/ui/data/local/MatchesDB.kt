@@ -6,11 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [MatchEntity::class],version =1,exportSchema = false)
+@Database(entities = [Match::class, Favorite::class], version = 1, exportSchema = false)
 abstract class MatchesDB : RoomDatabase() {
 
     // to access database you should get from DAO
-    abstract fun getMatchesFromDao (): MatchDAO
+    abstract fun getMatchesFromDao(): MatchDAO
+    abstract fun getFavDao(): FavoriteMatchesDAO
 
     // to prevent more connection should use one instance from database so make single tone design pattern
     companion object {
@@ -28,7 +29,7 @@ abstract class MatchesDB : RoomDatabase() {
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        MatchesDB::class.java,"MATCHES_DATA_BASE"
+                        MatchesDB::class.java, "MATCHES_DATA_BASE"
                     )
                         .fallbackToDestructiveMigration()
                         .build()

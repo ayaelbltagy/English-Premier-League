@@ -8,6 +8,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-livedata-core/2.5.1/38ecd5651d87b6db994df01f93fc72d6e59b846a/lifecycle-livedata-core-2.5.1-sources.jar!/androidx/lifecycle/LiveData.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-livedata-core/2.5.1/38ecd5651d87b6db994df01f93fc72d6e59b846a/lifecycle-livedata-core-2.5.1-sources.jar!/androidx/lifecycle/MutableLiveData.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-viewmodel/2.5.1/5ca998743721e06de4c4b5d48b7bbf0e73a8289b/lifecycle-viewmodel-2.5.1-sources.jar!/androidx/lifecycle/ViewModelProvider.kt">
           <value>
             <set />
@@ -53,17 +63,52 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../ProductsDemoApp/app/src/main/java/com/example/productsdemoapp/ProductsAdapter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/app/build.gradle">
           <value>
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/build/generated/source/kapt/debug/com/example/theenglishpremierleague/ui/data/local/ImageDAO_Impl.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/build/generated/source/kapt/debug/com/example/theenglishpremierleague/ui/data/local/MatchDAO_Impl.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/build/intermediates/packaged_manifests/debug/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/build/tmp/kapt3/stubs/debug/com/example/theenglishpremierleague/ui/data/local/MatchDAO.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/build/tmp/kapt3/stubs/debug/com/example/theenglishpremierleague/ui/data/local/MatchEntity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/com/example/theenglishpremierleague/DataBaseTesting.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/com/example/theenglishpremierleague/data/local/DataBaseTesting.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/com/example/theenglishpremierleague/data/local/FavoritesDaoTesting.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/com/example/theenglishpremierleague/data/local/MatchDaoTesting.kt">
           <value>
             <set />
           </value>
@@ -78,7 +123,97 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/MyApp.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/Splash.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/dependancies/AppModules.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/Constants.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/Splash.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/SplashActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/SplashnActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/Repository.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/RepositoryImp.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/Favorite.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/FavoriteMatches.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/FavoriteMatchesDAO.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/FavoriteMathes.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/HomeTeam.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/ImageDAO.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/Images.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/LocalRepository.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/LocalRepositoryImp.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/local/Match.kt">
           <value>
             <set />
           </value>
@@ -138,6 +273,36 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/helpers/BindingAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/helpers/FadeInLinearLayoutManager.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MainActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MainActivity22.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MainActivity22.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/main/MatchAdapter.kt">
           <value>
             <set />
@@ -173,6 +338,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/presentation/MatchAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/presentation/MatchesFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/presentation/MatchesViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/presentation/ViewModelFactory.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/repository/MatchRepository.kt">
           <value>
             <set />
@@ -184,6 +369,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/repository/RemoteRepository.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/anim/layout_animation.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/anim/recycler_items.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/ic_favorite_red_24dp.xml">
           <value>
             <set />
           </value>
@@ -203,7 +403,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_splashn.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_splash.xml">
           <value>
             <set />
           </value>
@@ -213,12 +423,82 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/navigation/app_navigation.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/values/colors.xml">
           <value>
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/values/themes.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/com/example/theenglishpremierleague/data/FakeDataSource.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/com/example/theenglishpremierleague/rule/MainCoroutineRule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/com/example/theenglishpremierleague/viewModel/MainCoroutineRule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/com/example/theenglishpremierleague/viewModel/MatchesViewModelTesting.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../ProductsDemoApp/app/src/main/java/com/example/productsdemoapp/ProductsAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../project4/starter/app/src/test/java/com/udacity/project4/locationreminders/data/FakeDataSource.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/TestTabs/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/TheShoeStore/app/src/main/res/navigation/app_navigation.xml">
           <value>
             <set />
           </value>

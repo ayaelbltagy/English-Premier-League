@@ -8,9 +8,15 @@ import androidx.room.Query
 
 @Dao
 interface MatchDAO {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addFavoriteMatches  (matches : List<MatchEntity>)
 
-    @Query("SELECT * FROM match_table")
-    fun getFavoriteMatches () : LiveData<List<MatchEntity>>
+    // To mark flag as a favorite item on fav click
+    @Query("UPDATE matches SET isFav=:value WHERE id = :id")
+    fun updateFlag(value: Boolean, id: Long)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addAllMatches(matches: List<Match>)
+
+    @Query("SELECT * FROM matches WHERE playingDate LIKE '%' || :day || '%'")
+    fun getAllMatches(day: String): LiveData<List<Match>>
+
 }
