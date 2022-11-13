@@ -1,7 +1,8 @@
 package com.example.theenglishpremierleague.ui.presentation
 
  import android.app.Application
-import androidx.lifecycle.*
+ import android.util.Log
+ import androidx.lifecycle.*
 import com.example.theenglishpremierleague.ui.data.local.Favorite
 import com.example.theenglishpremierleague.ui.data.local.Images
 import com.example.theenglishpremierleague.ui.data.local.LocalRepositoryImp
@@ -50,6 +51,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         getListOfRefreshedMatches()
         getListOfLocalFavMatches()
         getImagesFromdb()
+        getMatchesByFilter("")
      }
 
 
@@ -127,12 +129,23 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                     if(dataArrayList.size>0){
                         // to filter by next day that has matches
                         for (i in 0..dataArrayList.size) {
-                            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                            val strDate = sdf.parse(dataArrayList[i].date)
-                            if (!isDateFound && Date().before(strDate)) {
-                                date.postValue(dataArrayList[i].date)
-                                isDateFound = true
+
+//                            if(getCurrentDate().equals(convertDateFormat(dataArrayList[i].playingDate))){
+//                                Log.i("Date",convertDateFormat(dataArrayList[i].playingDate))
+//                                break
+//                            }
+
+                            val sdf2 = SimpleDateFormat("yyyy-MM-dd")
+                            val strDate2 = sdf2.parse(getCurrentDate())
+
+                            val sdf = SimpleDateFormat("yyyy-MM-dd")
+                            val strDate = sdf.parse(convertDateFormat(dataArrayList[i].playingDate))
+                             if(strDate.equals(strDate2) || strDate.after(strDate2)){
+                                 Log.i("Date",convertDateFormat(dataArrayList[i].playingDate))
+                                date.postValue(convertDateFormat(dataArrayList[i].playingDate))
+                                 break
                             }
+
                         }
                     }
                     // _remoteLiveData.postValue(dataArrayList.toList())
@@ -146,8 +159,16 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun convertDateFormat(input: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+        inputFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val date = inputFormat.parse(input)
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        outputFormat.timeZone = TimeZone.getDefault()
+        return outputFormat.format(date)
+    }
     fun getCurrentDate(): String {
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
         val date = Date()
         return formatter.format(date)
     }

@@ -8,7 +8,7 @@ data class Match (
      @PrimaryKey(autoGenerate = true)
      val id: Long,
      val status : String,
-     val date: String,
+     val playingDate: String,
      val homeTeamScore : String,
      val awayTeamScore :String,
      val homeTeamName :String,

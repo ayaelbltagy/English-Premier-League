@@ -53,7 +53,8 @@ class MatchesFragment : Fragment() {
             }
          // binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
         viewModel.selectedDay.observe(viewLifecycleOwner, Observer {
-            viewModel.getMatchesByFilter(it)
+            Toast.makeText(requireContext(),it,Toast.LENGTH_LONG).show()
+         //   viewModel.getMatchesByFilter(it)
 
         })
         viewModel.text.observe(viewLifecycleOwner, Observer {

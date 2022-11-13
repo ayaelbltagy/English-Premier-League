@@ -60,7 +60,7 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
                         val modelFav = Favorite(
                             items[adapterPosition].id,
                             items[adapterPosition].status,
-                            items[adapterPosition].date,
+                            items[adapterPosition].playingDate,
                             items[adapterPosition].homeTeamScore,
                             items[adapterPosition].awayTeamScore,
                             items[adapterPosition].homeTeamName,
@@ -104,7 +104,7 @@ override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") 
             holder.itemBinding.result.text =
                 item.homeTeamScore + "" + "-" + "" + item.awayTeamScore
         } else {
-            holder.itemBinding.result.text = convertDateFormat(item.date)
+            holder.itemBinding.result.text = convertDateFormat(item.playingDate)
         }
 
         if (item.isFav) {
