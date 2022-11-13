@@ -58,7 +58,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
 
 
 
-    fun getListOfRefreshedMatches() {
+   private fun getListOfRefreshedMatches() {
         viewModelScope.launch {
             try {
                 val response = remoteRepositoryImp.getAllRemoteMatches(API_KEY)
@@ -127,7 +127,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun convertDateFormat(input: String): String {
+   private fun convertDateFormat(input: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
         inputFormat.timeZone = TimeZone.getTimeZone("GMT")
         val date = inputFormat.parse(input)
@@ -135,12 +135,14 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         outputFormat.timeZone = TimeZone.getDefault()
         return outputFormat.format(date)
     }
-    fun getCurrentDate(): String {
+
+   private fun getCurrentDate(): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd")
         val date = Date()
         return formatter.format(date)
     }
-    fun getListOfLocalFavMatches() {
+
+   private fun getListOfLocalFavMatches() {
         favList.addSource(_favList) {
             favList.value = it
         }

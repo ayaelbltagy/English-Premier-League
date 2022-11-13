@@ -453,12 +453,37 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/com/example/theenglishpremierleague/data/FakeDataSource.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/com/example/theenglishpremierleague/rule/MainCoroutineRule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/com/example/theenglishpremierleague/viewModel/MainCoroutineRule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/com/example/theenglishpremierleague/viewModel/MatchesViewModelTesting.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/build.gradle">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../ProductsDemoApp/app/src/main/java/com/example/productsdemoapp/ProductsAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../project4/starter/app/src/test/java/com/udacity/project4/locationreminders/data/FakeDataSource.kt">
           <value>
             <set />
           </value>
