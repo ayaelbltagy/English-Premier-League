@@ -2,6 +2,7 @@ package com.example.theenglishpremierleague.ui.presentation
 
  import android.app.Application
  import android.util.Log
+ import android.widget.Toast
  import androidx.lifecycle.*
 import com.example.theenglishpremierleague.ui.data.local.Favorite
 import com.example.theenglishpremierleague.ui.data.local.Images
@@ -143,6 +144,8 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                     }
                 }
             } catch (ex: Exception) {
+                date.postValue("")
+
 
             }
         }
