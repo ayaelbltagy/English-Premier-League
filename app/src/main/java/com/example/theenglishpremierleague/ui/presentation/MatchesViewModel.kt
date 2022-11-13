@@ -2,11 +2,9 @@ package com.example.theenglishpremierleague.ui.presentation
 
  import android.app.Application
  import android.util.Log
- import android.widget.Toast
  import androidx.lifecycle.*
 import com.example.theenglishpremierleague.ui.data.local.Favorite
-import com.example.theenglishpremierleague.ui.data.local.Images
-import com.example.theenglishpremierleague.ui.data.local.LocalRepositoryImp
+ import com.example.theenglishpremierleague.ui.data.local.LocalRepositoryImp
 import com.example.theenglishpremierleague.ui.data.local.Match
 import com.example.theenglishpremierleague.ui.data.local.MatchesDB.Companion.getInstance
 import com.example.theenglishpremierleague.ui.data.remote.APIService
@@ -33,8 +31,6 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     private var localRepositoryImp: LocalRepositoryImp
     val favList: MediatorLiveData<List<Favorite>> = MediatorLiveData()
     private var _favList: LiveData<List<Favorite>>
-    private var listOfImages = listOf<Images>()
-    private var imagesList = listOf<Images>()
     private lateinit var _allMatchesList: LiveData<List<Match>>
     val allMatchesList: MediatorLiveData<List<Match>> = MediatorLiveData()
 
@@ -49,7 +45,6 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         _favList = localRepositoryImp.getFavoriteMatches()
         getListOfRefreshedMatches()
         getListOfLocalFavMatches()
-        getImagesFromdb()
      }
 
 
@@ -61,26 +56,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    suspend fun getImagesfromdb(): List<Images> {
-        withContext(Dispatchers.IO) {
-            listOfImages = localRepositoryImp.loadAllImage()
-        }
-        imagesList = listOfImages
-        return imagesList
-    }
 
-    private fun getImagesFromdb() {
-        viewModelScope.launch {
-            getImagesfromdb()
-        }
-    }
-
-
-    suspend fun saveImages(image: Images) {
-        withContext(Dispatchers.IO) {
-            localRepositoryImp.insertALLImages(image)
-        }
-    }
 
     fun getListOfRefreshedMatches() {
         viewModelScope.launch {

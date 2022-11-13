@@ -6,12 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [Match::class,Images::class,Favorite::class],version =2,exportSchema = false)
+@Database(entities = [Match::class,Favorite::class],version =1,exportSchema = false)
 abstract class MatchesDB : RoomDatabase() {
 
     // to access database you should get from DAO
     abstract fun getMatchesFromDao (): MatchDAO
-    abstract fun getImagesFromDao (): ImageDAO
     abstract fun getFavDao () : FavoriteMatchesDAO
 
     // to prevent more connection should use one instance from database so make single tone design pattern

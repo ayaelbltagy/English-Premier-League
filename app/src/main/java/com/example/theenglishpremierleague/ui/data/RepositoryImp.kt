@@ -2,7 +2,6 @@ package com.example.theenglishpremierleague.ui.data
 
 import androidx.lifecycle.LiveData
 import com.example.theenglishpremierleague.ui.data.local.Favorite
-import com.example.theenglishpremierleague.ui.data.local.Images
 import com.example.theenglishpremierleague.ui.data.local.LocalRepository
 import com.example.theenglishpremierleague.ui.data.local.Match
 import com.example.theenglishpremierleague.ui.data.remote.RemoteRepository
@@ -25,19 +24,8 @@ class RepositoryImp(private val local:LocalRepository,private val remote:RemoteR
         TODO("Not yet implemented")
     }
 
-    override fun insertALLImages(pic: Images) {
-        TODO("Not yet implemented")
-    }
 
-    override fun loadAllImage(): List<Images> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getAllRemoteMatches(key: String): String = remote.getAllRemoteMatches(key)
 
-    override suspend fun getAllRemoteMatches(key: String): String {
-        TODO("Not yet implemented")
-    }
 
-    override suspend fun getTeamsImages(key: String): String {
-        TODO("Not yet implemented")
-    }
 }

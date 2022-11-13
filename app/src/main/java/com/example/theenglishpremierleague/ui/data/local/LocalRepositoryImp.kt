@@ -5,14 +5,6 @@ import androidx.lifecycle.LiveData
 class LocalRepositoryImp (private val database :MatchesDB): LocalRepository {
 
 
-    override fun insertALLImages(pic: Images) {
-        database.getImagesFromDao().insertALLImages(pic)
-    }
-
-    override fun loadAllImage(): List<Images> {
-        return database.getImagesFromDao().loadAllImage()
-     }
-
     override fun addFavoriteMatches(match: Favorite) {
         database.getFavDao().addFavoriteMatches(match)
     }
