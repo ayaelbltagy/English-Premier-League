@@ -84,7 +84,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     fun getListOfRefreshedMatches() {
         viewModelScope.launch {
             try {
-                val response = remoteRepositoryImp.getAllMatches(API_KEY)
+                val response = remoteRepositoryImp.getAllRemoteMatches(API_KEY)
                 if (response != null) {
                     val responseJsonObject = JSONObject(response)
                     val dataArrayList: ArrayList<Match> = ArrayList()

@@ -123,7 +123,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/MyApp.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/Splash.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/dependancies/AppModules.kt">
           <value>
             <set />
           </value>
@@ -144,6 +154,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/SplashnActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/Repository.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/data/RepositoryImp.kt">
           <value>
             <set />
           </value>
