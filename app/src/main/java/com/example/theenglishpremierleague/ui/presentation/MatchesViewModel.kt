@@ -25,8 +25,7 @@ import androidx.lifecycle.MutableLiveData
 
 
 class MatchesViewModel(application: Application) : AndroidViewModel(application) {
-    private var isDateFound = false
-     var date = MutableLiveData<String> ()
+      var date = MutableLiveData<String> ()
     val selectedDay: LiveData<String> get() = date
     // prepare local database
     private val database = getInstance(application)
@@ -40,7 +39,6 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
 
     // prepare remote data
     private var remoteRepositoryImp: RemoteRepositoryImp
-    private var _remoteLiveData = MutableLiveData<List<Match>>()
 
 
 
@@ -51,12 +49,12 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
         getListOfRefreshedMatches()
         getListOfLocalFavMatches()
         getImagesFromdb()
-        getMatchesByFilter("")
      }
 
 
      fun getMatchesByFilter(date: String) {
         _allMatchesList = localRepositoryImp.getAllMatches(date)
+         Log.i("testDate",_allMatchesList.value?.size.toString())
         allMatchesList.addSource(_allMatchesList) {
             allMatchesList.value = it
         }
@@ -92,8 +90,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                     val dataArrayList: ArrayList<Match> = ArrayList()
                     val jsonArray = responseJsonObject.getJSONArray("matches")
                     for (i in 0 until jsonArray.length()) {
-                        //val model: MatchEntity = Gson().fromJson(jsonArray.get(i).toString(), MatchEntity::class.java)
-                        val matchJson = jsonArray.getJSONObject(i)
+                         val matchJson = jsonArray.getJSONObject(i)
                         val id = matchJson.getLong("id")
                         val status = matchJson.getString("status")
                         val utcDate = matchJson.getString("utcDate")
@@ -130,11 +127,6 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                         // to filter by next day that has matches
                         for (i in 0..dataArrayList.size) {
 
-//                            if(getCurrentDate().equals(convertDateFormat(dataArrayList[i].playingDate))){
-//                                Log.i("Date",convertDateFormat(dataArrayList[i].playingDate))
-//                                break
-//                            }
-
                             val sdf2 = SimpleDateFormat("yyyy-MM-dd")
                             val strDate2 = sdf2.parse(getCurrentDate())
 
@@ -148,8 +140,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
 
                         }
                     }
-                    // _remoteLiveData.postValue(dataArrayList.toList())
-                    withContext(Dispatchers.IO) {
+                     withContext(Dispatchers.IO) {
                         localRepositoryImp.addAllMatches(dataArrayList.toList())
                     }
                 }

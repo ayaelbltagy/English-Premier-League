@@ -49,7 +49,7 @@ class DataBaseTesting : TestCase(){
         val dataArrayList: ArrayList<Match> = ArrayList()
         dataArrayList.add(match)
          matchDao.addAllMatches(dataArrayList.toList())
-         val list = matchDao.getAllMatches()
+         val list = matchDao.getAllMatches("")
         assertEquals(list.value?.size, 1)
     }
 

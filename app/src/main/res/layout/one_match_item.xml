@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:padding="10dp"
             android:id="@+id/homeImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -31,6 +32,7 @@
             tools:ignore="MissingConstraints" />
 
         <ImageView
+            android:padding="10dp"
             android:id="@+id/awayImage"
             android:layout_width="100dp"
             android:layout_height="100dp"

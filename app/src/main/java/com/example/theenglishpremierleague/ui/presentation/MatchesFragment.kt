@@ -1,25 +1,24 @@
 package com.example.theenglishpremierleague.ui.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.theenglishpremierleague.R
 import com.example.theenglishpremierleague.databinding.FragmentMainBinding
 import com.example.theenglishpremierleague.ui.data.local.Favorite
 import com.example.theenglishpremierleague.ui.data.local.Images
-import kotlinx.android.synthetic.main.fragment_main.view.*
-import kotlinx.coroutines.runBlocking
-import java.util.*
-import com.example.theenglishpremierleague.R
-import com.example.theenglishpremierleague.ui.helpers.FadeInLinearLayoutManager
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendarView
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import kotlinx.android.synthetic.main.fragment_main.view.*
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
+import java.util.*
 import java.util.Calendar.AUGUST
 import java.util.Calendar.MAY
 
@@ -51,10 +50,56 @@ class MatchesFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(MatchesViewModel::class.java).apply {
                 setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
             }
-         // binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
+        // binding.recycler.layoutManager = FadeInLinearLayoutManager(context)
         viewModel.selectedDay.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireContext(),it,Toast.LENGTH_LONG).show()
-         //   viewModel.getMatchesByFilter(it)
+            if (it.isNullOrEmpty()) {
+                viewModel.getMatchesByFilter(convertDateFormat(getCurrentDate()))
+
+                // by default open today in case any error happen is filter day
+                val startDate = Calendar.getInstance()
+                startDate.set(Calendar.MONTH, AUGUST)
+                startDate.set(Calendar.DAY_OF_MONTH, 5)
+                startDate.set(Calendar.YEAR, 2022)
+
+                val endDate = Calendar.getInstance()
+                endDate.set(Calendar.MONTH, MAY)
+                endDate.set(Calendar.DAY_OF_MONTH, 28)
+                endDate.set(Calendar.YEAR, 2023)
+
+                val horizontalCalendar: HorizontalCalendar =
+                    HorizontalCalendar.Builder(binding.root, binding.calendarView.id)
+                        .range(startDate, endDate)
+                        .datesNumberOnScreen(5)
+                        .build()
+
+                horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
+                    override fun onDateSelected(date: Calendar?, position: Int) {
+                        val selectedMonth = date?.get(Calendar.MONTH).toString()
+                        val month = selectedMonth.toInt() + 1
+                        val date =
+                            date?.get(Calendar.YEAR).toString() + "-" + month + "-" + date?.get(
+                                Calendar.DAY_OF_MONTH
+                            ).toString()
+                        viewModel.getMatchesByFilter(convertDateFormat(date))
+                    }
+
+                    override fun onCalendarScroll(
+                        calendarView: HorizontalCalendarView,
+                        dx: Int,
+                        dy: Int
+                    ) {
+                    }
+
+                    override fun onDateLongClicked(date: Calendar?, position: Int): Boolean {
+                        return true
+                    }
+
+                }
+
+            } else {
+                viewModel.getMatchesByFilter(it)
+                createCalendarWithSelectedDay(it)
+            }
 
         })
         viewModel.text.observe(viewLifecycleOwner, Observer {
@@ -72,7 +117,7 @@ class MatchesFragment : Fragment() {
                         if (it.isNotEmpty()) {
                             binding.noItems.visibility = View.GONE
                             binding.recycler.visibility = View.VISIBLE
-                            var adapter = MatchAdapter(this@MatchesFragment, it, false,1)
+                            var adapter = MatchAdapter(this@MatchesFragment, it, false, 1)
                             binding.recycler.adapter = adapter
                         } else {
                             // no item in get from server
@@ -88,13 +133,12 @@ class MatchesFragment : Fragment() {
                 binding.calendarView.visibility = View.GONE
                 viewModel.favList.observe(viewLifecycleOwner, Observer {
                     it?.let {
-                        if(it.size>0){
+                        if (it.size > 0) {
                             binding.noItems.visibility = View.GONE
                             binding.recycler.visibility = View.VISIBLE
                             var adapter = MatchAdapter(this@MatchesFragment, it, true)
                             binding.recycler.adapter = adapter
-                        }
-                        else{
+                        } else {
                             binding.recycler.visibility = View.INVISIBLE
                             binding.noItems.visibility = View.VISIBLE
                             binding.noItems.setText(activity?.resources?.getString(R.string.no_fav))
@@ -106,35 +150,66 @@ class MatchesFragment : Fragment() {
             }
         })
 
-
-
         binding.lifecycleOwner = viewLifecycleOwner
-        // Calendar
+        return binding.root
+
+    }
+
+    fun convertDateFormat(input: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        inputFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val date = inputFormat.parse(input)
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        outputFormat.timeZone = TimeZone.getDefault()
+        return outputFormat.format(date)
+    }
+
+    fun createCalendarWithSelectedDay(input: String) {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        inputFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val date = inputFormat.parse(input)
+        val outputFormatForYear = SimpleDateFormat("yyyy", Locale.US)
+        outputFormatForYear.timeZone = TimeZone.getDefault()
+        val year = outputFormatForYear.format(date).toInt()
+        val outputFormatForMonth = SimpleDateFormat("MM", Locale.US)
+        outputFormatForMonth.timeZone = TimeZone.getDefault()
+        val month = outputFormatForMonth.format(date).toInt()
+        val outputFormatForDay = SimpleDateFormat("dd", Locale.US)
+        outputFormatForDay.timeZone = TimeZone.getDefault()
+        val day = outputFormatForDay.format(date).toInt()
+        // Calendar start
         val startDate = Calendar.getInstance()
-        startDate.set(Calendar.MONTH, AUGUST)
+        startDate.set(Calendar.MONTH, 8)
         startDate.set(Calendar.DAY_OF_MONTH, 5)
-        startDate.set(Calendar.YEAR,2022)
-
+        startDate.set(Calendar.YEAR, 2022)
+        // Calendar end
         val endDate = Calendar.getInstance()
-        endDate.set(Calendar.MONTH, MAY)
+        endDate.set(Calendar.MONTH, 5)
         endDate.set(Calendar.DAY_OF_MONTH, 28)
-        endDate.set(Calendar.YEAR,2023)
+        endDate.set(Calendar.YEAR, 2023)
+        // Calendar selected date
+        val selectedDate = Calendar.getInstance()
+        selectedDate.set(Calendar.MONTH, month-1)
+        selectedDate.set(Calendar.DAY_OF_MONTH, day)
+        selectedDate.set(Calendar.YEAR, year)
 
-
-          val horizontalCalendar: HorizontalCalendar =
-            HorizontalCalendar.Builder(binding.root,binding.calendarView.id)
+        val horizontalCalendar: HorizontalCalendar =
+            HorizontalCalendar.Builder(binding.root, binding.calendarView.id)
                 .range(startDate, endDate)
-                //.defaultSelectedDate()
+                .defaultSelectedDate(selectedDate)
                 .datesNumberOnScreen(5)
                 .build()
 
         horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
                 val selectedMonth = date?.get(Calendar.MONTH).toString()
-                val month = selectedMonth.toInt()+1
-                val date = date?.get(Calendar.YEAR).toString()+"-"+month+"-"+date?.get(Calendar.DAY_OF_MONTH).toString()
-              //  viewModel.getMatchesByFilter(convertDateFormat(date))
-             }
+                val month = selectedMonth.toInt() + 1
+                val date = date?.get(Calendar.YEAR).toString() + "-" + month + "-" + date?.get(
+                    Calendar.DAY_OF_MONTH
+                ).toString()
+                viewModel.getMatchesByFilter(convertDateFormat(date))
+            }
+
             override fun onCalendarScroll(calendarView: HorizontalCalendarView, dx: Int, dy: Int) {
             }
 
@@ -143,16 +218,7 @@ class MatchesFragment : Fragment() {
             }
         }
 
-        return binding.root
 
-    }
-    fun convertDateFormat(input: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        inputFormat.timeZone = TimeZone.getTimeZone("GMT")
-        val date = inputFormat.parse(input)
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        outputFormat.timeZone = TimeZone.getDefault()
-        return outputFormat.format(date)
     }
 
     fun getCurrentDate(): String {

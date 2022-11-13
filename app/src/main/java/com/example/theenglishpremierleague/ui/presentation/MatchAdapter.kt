@@ -1,6 +1,7 @@
 package com.example.theenglishpremierleague.ui.presentation
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,9 @@ import android.view.animation.AlphaAnimation
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.theenglishpremierleague.R
 import com.example.theenglishpremierleague.databinding.OneMatchItemBinding
 import com.example.theenglishpremierleague.ui.data.local.Favorite
@@ -84,87 +88,117 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
     }
 
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding =
+            OneMatchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
 
-override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = OneMatchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    return ViewHolder(binding)
-}
+
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        setFadeAnimation(holder.itemView)
+        if (items.size > 0 && !isFavList) {
+            holder.itemBinding.fav.visibility = View.VISIBLE
+            // show list off all matches
+            val item = items[position]
+            holder.itemBinding.homeTeam.text = item.homeTeamName
+            holder.itemBinding.awayTeam.text = item.awayTeamName
+            if (item.status.equals("FINISHED")) {
+                holder.itemBinding.result.text =
+                    item.homeTeamScore + "" + "-" + "" + item.awayTeamScore
+            } else {
+                holder.itemBinding.result.text = convertDateFormat(item.playingDate)
+            }
+
+            if (item.isFav) {
+                holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
+            } else {
+                holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_shadow_24dp)
+
+            }
+
+            var homeImageURL = "https://crests.football-data.org/" + item.homeTeamId + ".png"
+            // Glide.with(fragment).load(homeImageURL).into(holder.itemBinding.homeImage)
+            var awayImageURL = "https://crests.football-data.org/" + item.awayTeamId + ".png"
+            Glide.with(fragment).load(awayImageURL).into(holder.itemBinding.awayImage)
 
 
-override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-    //  setFadeAnimation(holder.itemView)
-    if (items.size > 0 && !isFavList) {
-        holder.itemBinding.fav.visibility = View.VISIBLE
 
-        // show list off all matches
-        val item = items[position]
-        holder.itemBinding.homeTeam.text = item.homeTeamName
-        holder.itemBinding.awayTeam.text = item.awayTeamName
-        if (item.status.equals("FINISHED")) {
-            holder.itemBinding.result.text =
-                item.homeTeamScore + "" + "-" + "" + item.awayTeamScore
+
+            Glide.with(fragment)
+                .load(homeImageURL)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<Drawable>?,
+                        dataSource: com.bumptech.glide.load.DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        var homeImageURLSVG =
+                            "https://crests.football-data.org/" + item.homeTeamId + ".svg"
+
+                        return false
+                    }
+                })
+                .into(holder.itemBinding.homeImage)
+
         } else {
-            holder.itemBinding.result.text = convertDateFormat(item.playingDate)
-        }
+            // show only fav matches
+            val favList = favList[position]
+            holder.itemBinding.homeTeam.text = favList.homeTeamName
+            holder.itemBinding.awayTeam.text = favList.awayTeamName
+            if (favList.status.equals("FINISHED")) {
+                holder.itemBinding.result.text =
+                    favList.homeTeamScore + "" + "-" + "" + favList.awayTeamScore
+            } else {
+                holder.itemBinding.result.text = convertDateFormat(favList.date)
+            }
 
-        if (item.isFav) {
+            holder.itemBinding.fav.visibility = View.VISIBLE
             holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
-        } else {
-            holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_shadow_24dp)
+
+            var homeImageURL = "https://crests.football-data.org/" + favList.homeTeamId + ".png"
+            Glide.with(fragment).load(homeImageURL).into(holder.itemBinding.homeImage)
+            var awayImageURL = "https://crests.football-data.org/" + favList.awayTeamId + ".png"
+            Glide.with(fragment).load(awayImageURL).into(holder.itemBinding.awayImage)
 
         }
 
-        var homeImageURL = "https://crests.football-data.org/" + item.homeTeamId + ".png"
-        Glide.with(fragment).load(homeImageURL).into(holder.itemBinding.homeImage)
-        var awayImageURL = "https://crests.football-data.org/" + item.awayTeamId + ".png"
-        Glide.with(fragment).load(awayImageURL).into(holder.itemBinding.awayImage)
-    } else {
-        // show only fav matches
-        val favList = favList[position]
-        holder.itemBinding.homeTeam.text = favList.homeTeamName
-        holder.itemBinding.awayTeam.text = favList.awayTeamName
-        if (favList.status.equals("FINISHED")) {
-            holder.itemBinding.result.text =
-                favList.homeTeamScore + "" + "-" + "" + favList.awayTeamScore
+    }
+
+
+    override fun getItemCount(): Int {
+        if (isFavList) {
+            return favList.size
         } else {
-            holder.itemBinding.result.text = convertDateFormat(favList.date)
+            return items.size
         }
-
-        holder.itemBinding.fav.visibility = View.VISIBLE
-        holder.itemBinding.fav.setBackgroundResource(R.drawable.ic_favorite_red_24dp)
-
-        var homeImageURL = "https://crests.football-data.org/" + favList.homeTeamId + ".png"
-        Glide.with(fragment).load(homeImageURL).into(holder.itemBinding.homeImage)
-        var awayImageURL = "https://crests.football-data.org/" + favList.awayTeamId + ".png"
-        Glide.with(fragment).load(awayImageURL).into(holder.itemBinding.awayImage)
-
     }
 
-}
 
-
-override fun getItemCount(): Int {
-    if (isFavList) {
-        return favList.size
-    } else {
-        return items.size
+    fun convertDateFormat(input: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+        inputFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val date = inputFormat.parse(input)
+        val outputFormat = SimpleDateFormat("hh:mm", Locale.US)
+        outputFormat.timeZone = TimeZone.getDefault()
+        return outputFormat.format(date)
     }
-}
 
-
-fun convertDateFormat(input: String): String {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-    inputFormat.timeZone = TimeZone.getTimeZone("GMT")
-    val date = inputFormat.parse(input)
-    val outputFormat = SimpleDateFormat("hh:mm", Locale.US)
-    outputFormat.timeZone = TimeZone.getDefault()
-    return outputFormat.format(date)
-}
-
-private fun setFadeAnimation(view: View) {
-    val anim = AlphaAnimation(0.0f, 1.0f)
-    anim.duration = FADE_DURATION.toLong()
-    view.startAnimation(anim)
-}
+    private fun setFadeAnimation(view: View) {
+        val anim = AlphaAnimation(0.0f, 1.0f)
+        anim.duration = FADE_DURATION.toLong()
+        view.startAnimation(anim)
+    }
 }
 
