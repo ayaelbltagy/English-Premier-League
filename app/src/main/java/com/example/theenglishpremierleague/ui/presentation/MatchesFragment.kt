@@ -249,16 +249,7 @@ class MatchesFragment : Fragment() {
         }
     }
 
-    // get images from online mood to offline mood
-    fun saveImage(imageURL: String, Id: Long) {
-        val model = Images(
-            Id,
-            imageURL,
-        )
-        runBlocking {
-            viewModel.saveImages(model)
-        }
-    }
+
 
     companion object {
         /**

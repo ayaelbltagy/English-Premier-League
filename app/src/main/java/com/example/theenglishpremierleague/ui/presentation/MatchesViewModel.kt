@@ -127,12 +127,10 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
                         // to filter by next day that has matches
                         for (i in 0..dataArrayList.size) {
 
-                            val sdf2 = SimpleDateFormat("yyyy-MM-dd")
-                            val strDate2 = sdf2.parse(getCurrentDate())
-
-                            val sdf = SimpleDateFormat("yyyy-MM-dd")
-                            val strDate = sdf.parse(convertDateFormat(dataArrayList[i].playingDate))
-                             if(strDate.equals(strDate2) || strDate.after(strDate2)){
+                            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+                            val currentDateFormat = dateFormat.parse(getCurrentDate())
+                             val matchDate = dateFormat.parse(convertDateFormat(dataArrayList[i].playingDate))
+                             if(matchDate.equals(currentDateFormat) || matchDate.after(currentDateFormat)){
                                  Log.i("Date",convertDateFormat(dataArrayList[i].playingDate))
                                 date.postValue(convertDateFormat(dataArrayList[i].playingDate))
                                  break
