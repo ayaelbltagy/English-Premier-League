@@ -353,6 +353,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/presentation/ViewModelFactory.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/example/theenglishpremierleague/ui/repository/MatchRepository.kt">
           <value>
             <set />

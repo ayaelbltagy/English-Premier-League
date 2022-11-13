@@ -6,8 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import android.widget.ImageView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
@@ -118,12 +122,9 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
             }
 
             var homeImageURL = "https://crests.football-data.org/" + item.homeTeamId + ".png"
-            // Glide.with(fragment).load(homeImageURL).into(holder.itemBinding.homeImage)
             var awayImageURL = "https://crests.football-data.org/" + item.awayTeamId + ".png"
-            Glide.with(fragment).load(awayImageURL).into(holder.itemBinding.awayImage)
-
-
-
+            var homeImageURLSVG = "https://crests.football-data.org/" + item.homeTeamId + ".svg"
+            var awayImageURLSVG = "https://crests.football-data.org/" + item.awayTeamId + ".svg"
 
             Glide.with(fragment)
                 .load(homeImageURL)
@@ -144,13 +145,38 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
                         target: Target<Drawable>?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        var homeImageURLSVG =
-                            "https://crests.football-data.org/" + item.homeTeamId + ".svg"
+                        holder.itemBinding.homeImage.loadUrl(homeImageURLSVG)
 
                         return false
                     }
                 })
                 .into(holder.itemBinding.homeImage)
+
+            Glide.with(fragment)
+                .load(awayImageURL)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<Drawable>?,
+                        dataSource: com.bumptech.glide.load.DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        holder.itemBinding.awayImage.loadUrl(awayImageURLSVG)
+                        return false
+                    }
+                })
+                .into(holder.itemBinding.awayImage)
+
 
         } else {
             // show only fav matches
@@ -199,6 +225,22 @@ class MatchAdapter() : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {
         val anim = AlphaAnimation(0.0f, 1.0f)
         anim.duration = FADE_DURATION.toLong()
         view.startAnimation(anim)
+    }
+
+    fun ImageView.loadUrl(url: String) {
+
+        val imageLoader = ImageLoader.Builder(this.context)
+            .componentRegistry { add(SvgDecoder(this@loadUrl.context)) }
+            .build()
+
+        val request = ImageRequest.Builder(this.context)
+            .crossfade(true)
+            .crossfade(500)
+            .data(url)
+            .target(this)
+            .build()
+
+        imageLoader.enqueue(request)
     }
 }
 

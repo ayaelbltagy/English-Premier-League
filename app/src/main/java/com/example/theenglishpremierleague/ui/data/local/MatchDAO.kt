@@ -11,12 +11,12 @@ interface MatchDAO {
 
     // To mark flag as a favorite item on fav click
     @Query("UPDATE matches SET isFav=:value WHERE id = :id")
-    fun updateFlag (value: Boolean , id: Long)
+    fun updateFlag(value: Boolean, id: Long)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addAllMatches  (matches :  List<Match>)
+    fun addAllMatches(matches: List<Match>)
 
     @Query("SELECT * FROM matches WHERE playingDate LIKE '%' || :day || '%'")
-    fun getAllMatches (day:String) : LiveData<List<Match>>
+    fun getAllMatches(day: String): LiveData<List<Match>>
 
 }

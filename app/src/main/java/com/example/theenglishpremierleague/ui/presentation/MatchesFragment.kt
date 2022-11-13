@@ -187,7 +187,7 @@ class MatchesFragment : Fragment() {
         endDate.set(Calendar.YEAR, 2023)
         // Calendar selected date
         val selectedDate = Calendar.getInstance()
-        selectedDate.set(Calendar.MONTH, month-1)
+        selectedDate.set(Calendar.MONTH, month - 1)
         selectedDate.set(Calendar.DAY_OF_MONTH, day)
         selectedDate.set(Calendar.YEAR, year)
 
@@ -246,7 +246,6 @@ class MatchesFragment : Fragment() {
             viewModel.updateFlag(flag, id)
         }
     }
-
 
 
     companion object {

@@ -8,8 +8,6 @@ import com.example.theenglishpremierleague.ui.data.local.Favorite
 import com.example.theenglishpremierleague.ui.presentation.MatchesViewModel
 import junit.framework.TestCase
 import kotlinx.coroutines.*
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,6 +19,7 @@ import kotlin.coroutines.CoroutineContext
 @ExperimentalCoroutinesApi
 class MatchesViewModelTesting : CoroutineScope {
     val job = Job()
+
     @get:Rule
     val taskRule = InstantTaskExecutorRule()
 
@@ -36,13 +35,14 @@ class MatchesViewModelTesting : CoroutineScope {
     fun setup() {
         viewModel = MatchesViewModel(ApplicationProvider.getApplicationContext())
     }
-    @Test
-     fun getMatchesTesting () = runBlocking {
-        val favMatch = Favorite(1001,"finished","2022-5-7","1","0","liver pool", 5,"city",100,false)
-        viewModel.saveFixtures(favMatch)
-        TestCase.assertEquals(viewModel.favList.value?.size,1)
-    }
 
+    @Test
+    fun getMatchesTesting() = runBlocking {
+        val favMatch =
+            Favorite(1001, "finished", "2022-5-7", "1", "0", "liver pool", 5, "city", 100, false)
+        viewModel.saveFixtures(favMatch)
+        TestCase.assertEquals(viewModel.favList.value?.size, 1)
+    }
 
 
 }

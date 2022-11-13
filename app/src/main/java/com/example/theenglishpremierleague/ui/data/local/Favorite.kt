@@ -5,16 +5,16 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "favorites")
-data class Favorite (
+data class Favorite(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val status : String,
+    val status: String,
     val date: String,
-    val homeTeamScore : String,
-    val awayTeamScore :String,
-    val homeTeamName :String,
-    val homeTeamId :Long,
-    val awayTeamName : String,
-    val awayTeamId :Long,
-    val isFav :Boolean
+    val homeTeamScore: String,
+    val awayTeamScore: String,
+    val homeTeamName: String,
+    val homeTeamId: Long,
+    val awayTeamName: String,
+    val awayTeamId: Long,
+    val isFav: Boolean
 )

@@ -67,7 +67,7 @@
             android:maxLines="1"
             android:padding="5dp"
             android:paddingStart="30dp"
-            android:textColor="@color/teal_700"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@id/homeTeam"
